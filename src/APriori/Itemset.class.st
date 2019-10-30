@@ -32,6 +32,20 @@ Itemset >> allSubsets [
 	^ (self asArray combinations collect: #asItemset) copyWithout: self
 ]
 
+{ #category : #testing }
+Itemset >> canBeJoinedWith: anotherItemset [
+	| itemset1 itemset2 itemset1WithoutLast itemset2WithoutLast |
+	
+	itemset1 := self asOrderedCollection.
+	itemset2 := anotherItemset asOrderedCollection.
+	
+	itemset1WithoutLast := itemset1 copyFrom: 1 to: itemset1 size - 1.
+	itemset2WithoutLast := itemset2 copyFrom: 1 to: itemset2 size - 1.
+	
+	^ (itemset1WithoutLast = itemset2WithoutLast) and: (itemset1 last < itemset2 last).
+	
+]
+
 { #category : #'as yet unclassified' }
 Itemset >> isSupersetOf: anotherItemset [
 	"Check if all items of another itemset are included in this itemset"
@@ -40,6 +54,22 @@ Itemset >> isSupersetOf: anotherItemset [
 		ifFound: [ ^ false ].
 		
 	^ true
+]
+
+{ #category : #testing }
+Itemset >> joinWith: anotherItemset [
+	| itemset1 itemset2 itemsetWithoutLast |
+	
+	itemset1 := self asOrderedCollection.
+	itemset2 := anotherItemset asOrderedCollection.
+	
+	itemsetWithoutLast := itemset1 copyFrom: 1 to: itemset1 size - 1.
+	
+	^ itemsetWithoutLast
+		add: itemset1 last;
+		add: itemset2 last;
+		asItemset.
+	
 ]
 
 { #category : #printing }
