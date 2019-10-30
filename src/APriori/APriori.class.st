@@ -11,5 +11,5 @@ APriori >> supportOf: aBasket in: aCollectionOfBaskets [
 	basketsThatContainAllItems := aCollectionOfBaskets select: [ :each |
 		each items includesAll: aBasket items ].
 	
-	^ basketsThatContainAllItems size / aCollectionOfBaskets size
+	^ basketsThatContainAllItems size / aCollectionOfBaskets size.
 ]
