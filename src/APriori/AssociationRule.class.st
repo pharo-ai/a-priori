@@ -11,3 +11,10 @@ AssociationRule >> confidenceIn: transactions [
 	supportOfKey := self key supportIn: transactions.
 	^ supportOfBoth / supportOfKey 
 ]
+
+{ #category : #printing }
+AssociationRule >> printOn: aStream [
+	self key printOn: aStream.
+	aStream nextPutAll: ' => '.
+	self value printOn: aStream.
+]

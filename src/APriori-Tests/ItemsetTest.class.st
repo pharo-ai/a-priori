@@ -94,6 +94,20 @@ ItemsetTest >> testIsSupersetOf [
 ]
 
 { #category : #tests }
+ItemsetTest >> testPrintOn [
+	| itemset stream expected actual |
+	itemset := #(eggs milk butter) asItemset.
+	
+	stream := String new writeStream.
+	itemset printOn: stream.
+	
+	expected := '{butter, milk, eggs}'.
+	actual := stream contents.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 ItemsetTest >> testSupportIn [
 	| expected actual |
 	

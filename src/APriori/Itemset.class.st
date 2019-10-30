@@ -42,6 +42,14 @@ Itemset >> isSupersetOf: anotherItemset [
 	^ true
 ]
 
+{ #category : #printing }
+Itemset >> printOn: aStream [
+	aStream
+		nextPut: ${;
+		nextPutAll: (', ' join: self);
+		nextPut: $}.
+]
+
 { #category : #'as yet unclassified' }
 Itemset >> supportIn: transactions [
 	"The probability that a random transaction (itemset) taken from a given collection of transactions contains all items of this itemset (self)"
