@@ -26,12 +26,12 @@ Create a list of transactions. Each transaction is an itemset (for example, a li
 
 ```Smalltalk
 transactions := { 
-	#(eggs milk butter) asItemset .
-	#(milk cereal) asItemset .
-	#(eggs bacon) asItemset .
-	#(bread butter) asItemset .
-	#(bread bacon eggs) asItemset .
-	#(bread avocado butter bananas) asItemset
+  #(eggs milk butter) asItemset .
+  #(milk cereal) asItemset .
+  #(eggs bacon) asItemset .
+  #(bread butter) asItemset .
+  #(bread bacon eggs) asItemset .
+  #(bread avocado butter bananas) asItemset
 }.
 ```
 
@@ -39,8 +39,8 @@ Initialize an APriori algorithm with a support and confidence thresholds:
 
 ```Smalltalk
 apriori := APriori
-	supportThreshold: 2/6
-	confidenceThreshold: 2/6.
+  supportThreshold: 2/6
+  confidenceThreshold: 2/6.
 ```
 
 Now you can find frequent itemsets - sets of items that are likely to be purchased together:
