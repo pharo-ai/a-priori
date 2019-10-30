@@ -19,3 +19,50 @@ Metacello new
   repository: 'github://olekscode/APriori/src';
   load.
 ```
+
+## How to use it?
+
+Create a list of transactions. Each transaction is an itemset (for example, a list of products that were purchased together by one customer).
+
+```Smalltalk
+transactions := { 
+	#(eggs milk butter) asItemset .
+	#(milk cereal) asItemset .
+	#(eggs bacon) asItemset .
+	#(bread butter) asItemset .
+	#(bread bacon eggs) asItemset .
+	#(bread avocado butter bananas) asItemset
+}.
+```
+
+Initialize an APriori algorithm with a support and confidence thresholds:
+
+```Smalltalk
+apriori := APriori
+	supportThreshold: 2/6
+	confidenceThreshold: 2/6.
+```
+
+Now you can find frequent itemsets - sets of items that are likely to be purchased together:
+
+```Smalltalk
+apriori frequentItemsetsIn: transactions.
+
+" anArray(
+  {bread, butter}
+  {eggs, bacon}
+)"
+```
+
+Or generate association rules in the form `key => value` where a set of items `value` will be recommended to a customer who purchases a set of items `key`:
+
+```Smalltalk
+apriori associationRulesFrom: transactions.
+
+" anArray(
+  {bread} => {butter}
+  {butter} => {bread}
+  {eggs} => {bacon}
+  {bacon} => {eggs}
+)"
+```
