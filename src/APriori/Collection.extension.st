@@ -1,8 +1,8 @@
 Extension { #name : #Collection }
 
 { #category : #'*APriori' }
-Collection >> asBasket [
-	"Answer a Basket whose elements are the elements of the receiver."
+Collection >> asItemset [
+	"Answer an Itemset whose elements are the elements of the receiver."
 
-	^ Basket withAll: self
+	^ Itemset withAll: self
 ]
