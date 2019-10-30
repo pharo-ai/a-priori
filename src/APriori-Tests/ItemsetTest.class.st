@@ -79,6 +79,29 @@ ItemsetTest >> testAllSubsets [
 ]
 
 { #category : #tests }
+ItemsetTest >> testAsArray [ 
+	| array itemset expected actual |
+	array := #(bread butter avocado).
+	itemset := array asItemset.
+	actual := itemset asArray.
+	expected := array sorted.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+ItemsetTest >> testCanBeJoinedWith [
+	| itemset1 itemset2 itemset3 |
+	
+	itemset1 := #(avocado bread butter) asItemset.
+	itemset2 := #(avocado bread eggs) asItemset.
+	itemset3 := #(bread eggs milk) asItemset.
+	
+	self assert: (itemset1 canBeJoinedWith: itemset2).
+	self deny: (itemset2 canBeJoinedWith: itemset1).
+	self deny: (itemset1 canBeJoinedWith: itemset3).
+]
+
+{ #category : #tests }
 ItemsetTest >> testIsSupersetOf [
 	| itemset1 itemset2 itemset3 |
 	
@@ -94,6 +117,30 @@ ItemsetTest >> testIsSupersetOf [
 ]
 
 { #category : #tests }
+ItemsetTest >> testItemsetIsSorted [
+	| itemset expected actual |
+	
+	itemset := #(g d a f h b i e c j) asItemset.
+	expected := #(a b c d e f g h i j).
+	actual := itemset asArray.
+	
+	self assert: actual equals: expected
+]
+
+{ #category : #tests }
+ItemsetTest >> testJoinWith [
+	| itemset1 itemset2 expected actual |
+	
+	itemset1 := #(avocado bread butter) asItemset.
+	itemset2 := #(avocado bread eggs) asItemset.
+	
+	expected := #(avocado bread butter eggs) asItemset.
+	actual := itemset1 joinWith: itemset2.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 ItemsetTest >> testPrintOn [
 	| itemset stream expected actual |
 	itemset := #(eggs milk butter) asItemset.
@@ -101,7 +148,7 @@ ItemsetTest >> testPrintOn [
 	stream := String new writeStream.
 	itemset printOn: stream.
 	
-	expected := '{butter, milk, eggs}'.
+	expected := '{butter, eggs, milk}'.
 	actual := stream contents.
 	
 	self assert: actual equals: expected.

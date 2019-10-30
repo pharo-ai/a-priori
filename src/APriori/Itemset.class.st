@@ -1,8 +1,17 @@
 Class {
 	#name : #Itemset,
-	#superclass : #Set,
+	#superclass : #Array,
+	#type : #variable,
 	#category : #APriori
 }
+
+{ #category : #'instance creation' }
+Itemset class >> withAll: aCollection [
+	| itemset |
+	itemset := super withAll: aCollection.
+	itemset sort.
+	^ itemset.
+]
 
 { #category : #'as yet unclassified' }
 Itemset >> => anotherItemset [
@@ -32,17 +41,19 @@ Itemset >> allSubsets [
 	^ (self asArray combinations collect: #asItemset) copyWithout: self
 ]
 
+{ #category : #converting }
+Itemset >> asArray [ 
+	^ Array withAll: self
+]
+
 { #category : #testing }
 Itemset >> canBeJoinedWith: anotherItemset [
-	| itemset1 itemset2 itemset1WithoutLast itemset2WithoutLast |
+	| itemset1WithoutLast itemset2WithoutLast |
 	
-	itemset1 := self asOrderedCollection.
-	itemset2 := anotherItemset asOrderedCollection.
+	itemset1WithoutLast := self copyFrom: 1 to: self size - 1.
+	itemset2WithoutLast := anotherItemset copyFrom: 1 to: anotherItemset size - 1.
 	
-	itemset1WithoutLast := itemset1 copyFrom: 1 to: itemset1 size - 1.
-	itemset2WithoutLast := itemset2 copyFrom: 1 to: itemset2 size - 1.
-	
-	^ (itemset1WithoutLast = itemset2WithoutLast) and: (itemset1 last < itemset2 last).
+	^ (itemset1WithoutLast = itemset2WithoutLast) and: (self last < anotherItemset last).
 	
 ]
 
@@ -65,7 +76,8 @@ Itemset >> joinWith: anotherItemset [
 	
 	itemsetWithoutLast := itemset1 copyFrom: 1 to: itemset1 size - 1.
 	
-	^ itemsetWithoutLast
+	^ (OrderedCollection
+		withAll: itemsetWithoutLast)
 		add: itemset1 last;
 		add: itemset2 last;
 		asItemset.
