@@ -127,3 +127,68 @@ ItemsetEncoderTest >> testEncodeItemsetCountSupport [
 	self assert: encoded count equals: 10.
 	self assert: encoded support equals: 0.1.
 ]
+
+{ #category : #tests }
+ItemsetEncoderTest >> testEncodeRule [
+	| rule expected actual |
+	rule := #(bread) asItemset => #(butter) asItemset.
+	expected := #(2) asItemset => #(5) asItemset.
+	actual := encoder encodeRule: rule.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+ItemsetEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
+	| rule encoded |
+	
+	rule := (#(bread) asItemset => #(butter) asItemset)
+		count: 10;
+		support: 0.1;
+		confidence: 0.5;
+		lift: 2;
+		yourself.
+	
+	encoded := encoder encodeRule: rule.
+	
+	self assert: encoded count equals: 10.
+	self assert: encoded support equals: 0.1.
+	self assert: encoded confidence equals: 0.5.
+	self assert: encoded lift equals: 2.
+]
+
+{ #category : #tests }
+ItemsetEncoderTest >> testEncodeRuleKeyCountSupport [
+	| itemset1 itemset2 rule encoded |
+	
+	itemset1 := #(bread) asItemset
+		count: 10;
+		support: 0.1;
+		yourself.
+		
+	itemset2 := #(butter) asItemset.
+	rule := itemset1 => itemset2.
+	
+	encoded := encoder encodeRule: rule.
+	
+	self assert: encoded key count equals: 10.
+	self assert: encoded key support equals: 0.1.
+]
+
+{ #category : #tests }
+ItemsetEncoderTest >> testEncodeRuleValueCountSupport [
+	| itemset1 itemset2 rule encoded |
+	
+	itemset1 := #(bread) asItemset.
+		
+	itemset2 := #(butter) asItemset
+		count: 10;
+		support: 0.1;
+		yourself.
+		
+	rule := itemset1 => itemset2.
+	
+	encoded := encoder encodeRule: rule.
+	
+	self assert: encoded value count equals: 10.
+	self assert: encoded value support equals: 0.1.
+]

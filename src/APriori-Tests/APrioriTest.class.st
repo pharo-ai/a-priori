@@ -82,20 +82,151 @@ APrioriTest >> testAssociationRules [
 ]
 
 { #category : #tests }
-APrioriTest >> testCalculateStatisticsOfItemset [
-	| counts supports expected actual |
+APrioriTest >> testCalculateConfidenceOfRule [
+	| rule expected actual |
 	
-	counts := #(1 1 2 2 1 1).
-	supports := { 1/6 . 1/6 . 1/3 . 1/3 . 1/6 . 1/6 }.
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
 	
-	expected := transactions withIndexCollect: [ :each :i |
-		each asItemset
-			count: (counts at: i);
-			support: (supports at: i);
-			yourself ].
+	apriori calculateStatisticsOfRule: rule.
 	
-	actual := transactions collect: [ :each | each asItemset ].
-	actual do: [ :itemset | apriori calculateStatisticsOfItemset: itemset ].
+	expected := 2/3.
+	actual := rule confidence.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateCountOfItemset [
+	| itemset expected actual |
+	
+	itemset := #(bread butter) asItemset.
+	itemset := apriori encoder encodeItemset: itemset.
+	
+	apriori calculateStatisticsOfItemset: itemset.
+	
+	expected := 2.
+	actual := itemset count.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateCountOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 2.
+	actual := rule count.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateKeyCountOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 3.
+	actual := rule key count.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateKeySupportOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 1/2.
+	actual := rule key support.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateLiftOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 4/3.
+	actual := rule lift.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateSupportOfItemset [
+	| itemset expected actual |
+	
+	itemset := #(bread butter) asItemset.
+	itemset := apriori encoder encodeItemset: itemset.
+	
+	apriori calculateStatisticsOfItemset: itemset.
+	
+	expected := 1/3.
+	actual := itemset support.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateSupportOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 1/3.
+	actual := rule support.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateValueCountOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 3.
+	actual := rule value count.
+	
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriTest >> testCalculateValueSupportOfRule [
+	| rule expected actual |
+	
+	rule := #(bread) asItemset => #(butter) asItemset.
+	rule := apriori encoder encodeRule: rule.
+	
+	apriori calculateStatisticsOfRule: rule.
+	
+	expected := 1/2.
+	actual := rule value support.
 	
 	self assert: actual equals: expected.
 ]

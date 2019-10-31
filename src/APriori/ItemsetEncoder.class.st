@@ -59,6 +59,21 @@ ItemsetEncoder >> encodeItemset: itemset [
 	^ encodedItemset
 ]
 
+{ #category : #converting }
+ItemsetEncoder >> encodeRule: rule [
+	| encodedRule |
+	
+	encodedRule := ((self encodeItemset: rule key) => (self encodeItemset: rule value)).
+		
+	encodedRule
+		count: rule count;
+		support: rule support;
+		confidence: rule confidence;
+		lift: rule lift.
+		
+	^ encodedRule
+]
+
 { #category : #initialization }
 ItemsetEncoder >> initializeTransactions: transactions [
 	vocabulary := (transactions flatCollect: #yourself) asSet asArray.

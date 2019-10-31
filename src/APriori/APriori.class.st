@@ -7,7 +7,8 @@ Class {
 		'frequentItemsets',
 		'transactions',
 		'associationRules',
-		'countDictionary'
+		'countDictionary',
+		'encoder'
 	],
 	#category : #APriori
 }
@@ -31,7 +32,7 @@ APriori class >> transactions: transactions supportThreshold: aSupportThreshold 
 { #category : #'api - lazy recommendation' }
 APriori >> associationRules [
 	associationRules ifNil: [ self findAssociationRules ].
-	^ associationRules
+	^ self decodeRules: associationRules
 ]
 
 { #category : #'private - counting' }
@@ -100,10 +101,34 @@ APriori >> countOfItemset: itemset [
 	^ countDictionary at: items
 ]
 
+{ #category : #'private - encoding decoding' }
+APriori >> decodeItemsets: aCollectionOfItemsets [
+	^ aCollectionOfItemsets collect: [ :itemset |
+		encoder decodeItemset: itemset ].
+]
+
+{ #category : #'private - encoding decoding' }
+APriori >> decodeRules: aCollectionOfRules [
+	^ aCollectionOfRules collect: [ :rule |
+		encoder decodeRule: rule ].
+]
+
+{ #category : #'private - encoding decoding' }
+APriori >> encodeTransactions [
+	transactions := transactions collect: [ :itemset |
+		encoder encodeItemset: itemset ].
+]
+
+{ #category : #accessing }
+APriori >> encoder [ 
+	^ encoder
+]
+
 { #category : #'private - recommendation' }
 APriori >> findAssociationRules [
 	| itemsets |
-	itemsets := self frequentItemsets.
+	itemsets := self frequentItemsets collect: [ :itemset |
+		self encoder encodeItemset: itemset ].
 	
 	associationRules := itemsets flatCollect: [ :itemset |
 		itemset allAssociationRules select: [ :rule |
@@ -155,7 +180,7 @@ APriori >> findFrequentItemsetsOfSizeOne [
 { #category : #'api - lazy recommendation' }
 APriori >> frequentItemsets [
 	frequentItemsets ifNil: [ self findFrequentItemsets ].
-	^ frequentItemsets
+	^ self decodeItemsets: frequentItemsets
 ]
 
 { #category : #initialization }
@@ -169,6 +194,9 @@ APriori >> initializeTransactions: aCollectionOfItemsets supportThreshold: aSupp
 	transactions := aCollectionOfItemsets.
 	supportThreshold := aSupportThreshold.
 	confidenceThreshold := aConfidenceThreshold.
+	
+	encoder := ItemsetEncoder basedOn: transactions.
+	self encodeTransactions.
 	^ self
 ]
 
