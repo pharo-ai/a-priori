@@ -20,19 +20,43 @@ ItemsetEncoder class >> new [
 
 { #category : #converting }
 ItemsetEncoder >> decodeItemset: itemset [
-	^ itemset collect: [ :i |
+	| decodedItemset |
+	
+	decodedItemset := itemset collect: [ :i |
 		vocabulary at: i ].
+	
+	decodedItemset count: itemset count.
+	decodedItemset support: itemset support.
+	
+	^ decodedItemset
 ]
 
 { #category : #converting }
 ItemsetEncoder >> decodeRule: rule [
-	^ (self decodeItemset: rule key) => (self decodeItemset: rule value)
+	| decodedRule |
+	
+	decodedRule := ((self decodeItemset: rule key) => (self decodeItemset: rule value)).
+		
+	decodedRule
+		count: rule count;
+		support: rule support;
+		confidence: rule confidence;
+		lift: rule lift.
+		
+	^ decodedRule
 ]
 
 { #category : #converting }
 ItemsetEncoder >> encodeItemset: itemset [
-	^ itemset collect: [ :item |
+	| encodedItemset |
+	
+	encodedItemset := itemset collect: [ :item |
 		vocabulary indexOf: item ].
+	
+	encodedItemset count: itemset count.
+	encodedItemset support: itemset support.
+	
+	^ encodedItemset
 ]
 
 { #category : #initialization }
