@@ -25,20 +25,20 @@ Metacello new
 Create a list of transactions. Each transaction is an itemset (for example, a list of products that were purchased together by one customer).
 
 ```Smalltalk
-transactions := { 
-  #(eggs milk butter) asItemset .
-  #(milk cereal) asItemset .
-  #(eggs bacon) asItemset .
-  #(bread butter) asItemset .
-  #(bread bacon eggs) asItemset .
-  #(bread avocado butter bananas) asItemset
-}.
+transactions := #( 
+  (eggs milk butter)
+  (milk cereal)
+  (eggs bacon)
+  (bread butter)
+  (bread bacon eggs)
+  (bread avocado butter bananas)).
 ```
 
 Initialize an APriori algorithm with a support and confidence thresholds:
 
 ```Smalltalk
 apriori := APriori
+  transactions: transactions
   supportThreshold: 2/6
   confidenceThreshold: 2/6.
 ```
@@ -46,7 +46,7 @@ apriori := APriori
 Now you can find frequent itemsets - sets of items that are likely to be purchased together:
 
 ```Smalltalk
-apriori frequentItemsetsIn: transactions.
+itemsets := apriori frequentItemsets.
 
 " anArray(
   {bread, butter}
@@ -57,7 +57,7 @@ apriori frequentItemsetsIn: transactions.
 Or generate association rules in the form `key => value` where a set of items `value` will be recommended to a customer who purchases a set of items `key`:
 
 ```Smalltalk
-apriori associationRulesFrom: transactions.
+rules := apriori associationRules.
 
 " anArray(
   {bread} => {butter}
