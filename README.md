@@ -39,8 +39,8 @@ Initialize an APriori algorithm with a support and confidence thresholds:
 ```Smalltalk
 apriori := APriori
   transactions: transactions
-  supportThreshold: 2/6
-  confidenceThreshold: 2/6.
+  supportThreshold: 1/3
+  confidenceThreshold: 1/3.
 ```
 
 Now you can find frequent itemsets - sets of items that are likely to be purchased together:
@@ -65,4 +65,22 @@ rules := apriori associationRules.
   {eggs} => {bacon}
   {bacon} => {eggs}
 )"
+```
+
+Every itemset knows its count and support:
+
+```Smalltalk
+itemset := itemsets first. "{bread, butter}"
+itemset count. "2"
+itemset support. "1/3"
+```
+
+Similarly, every rule knows its count, support, confidence, and lift:
+
+```Smalltalk
+rule := rules first. "{bread} => {butter}"
+rule count. "2"
+rule support. "1/3"
+rule confidence. "2/3"
+rule lift. "4/3"
 ```
