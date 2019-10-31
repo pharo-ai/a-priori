@@ -118,7 +118,7 @@ rules sort: [ :a :b | a lift > b lift ].
 
 This will produce the following 15 rules:
 
-```Smalltalk
+```
 {citrus fruit, root vegetables} => {other vegetables}
 {root vegetables, tropical fruit} => {other vegetables}
 {rolls/buns, root vegetables} => {other vegetables}
