@@ -38,9 +38,14 @@ APriori >> associationRules [
 APriori >> calculateCountOfItemset: itemset [
 	"Find the number of transactions that contain all items of the given itemset"
 	
-	^ (transactions select: [ :eachItemset |
-		eachItemset isSupersetOf: itemset ]) size.
+	| count |
+	count := 0.
 	
+	transactions do: [ :eachItemset |
+		(eachItemset isSupersetOf: itemset)
+			ifTrue: [ count := count + 1 ] ].
+			
+	^ count
 	
 ]
 

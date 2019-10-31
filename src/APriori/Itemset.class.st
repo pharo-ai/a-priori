@@ -88,11 +88,7 @@ Itemset >> count: anObject [
 { #category : #'as yet unclassified' }
 Itemset >> isSupersetOf: anotherItemset [
 	"Check if all items of another itemset are included in this itemset"
-	anotherItemset
-		detect: [ :each | (self includes: each) not ]
-		ifFound: [ ^ false ].
-		
-	^ true
+	^ self includesAll: anotherItemset
 ]
 
 { #category : #testing }

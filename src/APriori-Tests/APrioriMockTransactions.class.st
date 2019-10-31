@@ -12,6 +12,5 @@ APrioriMockTransactions >> transactions [
 		(eggs bacon)
 		(bread butter)
 		(bread bacon eggs)
-		(bread avocado butter bananas)
-	) collect: #asItemset
+		(bread avocado butter bananas))
 ]
