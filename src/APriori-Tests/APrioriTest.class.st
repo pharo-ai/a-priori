@@ -116,5 +116,10 @@ APrioriTest >> testFrequentItemsets [
 		
 	expected := { itemset1 . itemset2 }.
 	actual := apriori frequentItemsets.
+	
+	"We don't care about the order"
+	expected := expected asSet.
+	actual := actual asSet.
+	
 	self assert: actual equals: expected.
 ]
