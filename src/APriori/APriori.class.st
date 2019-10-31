@@ -4,30 +4,73 @@ Class {
 	#instVars : [
 		'supportThreshold',
 		'confidenceThreshold',
-		'frequentItemsets'
+		'frequentItemsets',
+		'transactions',
+		'associationRules',
+		'countDictionary'
 	],
 	#category : #APriori
 }
 
-{ #category : #'as yet unclassified' }
-APriori class >> supportThreshold: aSupportThreshold confidenceThreshold: aConfidenceThreshold [
-	^ self new
-		supportThreshold: aSupportThreshold;
-		confidenceThreshold: aConfidenceThreshold;
-		yourself
+{ #category : #'instance creation' }
+APriori class >> new [ 
+	self shouldNotImplement 
 ]
 
 { #category : #'as yet unclassified' }
-APriori >> associationRulesFrom: transactions [
-	| itemsets |
-	itemsets := self frequentItemsetsIn: transactions.
+APriori class >> transactions: transactions supportThreshold: aSupportThreshold confidenceThreshold: aConfidenceThreshold [
+	| transactionsAsItemsets |
+	transactionsAsItemsets := transactions collect: #asItemset.
 	
-	^ itemsets flatCollect: [ :itemset |
-		itemset allAssociationRules select: [ :rule |
-			(rule confidenceIn: transactions) >= self confidenceThreshold ] ]
+	^ super new
+		initializeTransactions: transactionsAsItemsets
+		supportThreshold: aSupportThreshold
+		confidenceThreshold: aConfidenceThreshold
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'api - lazy recommendation' }
+APriori >> associationRules [
+	associationRules ifNil: [ self findAssociationRules ].
+	^ associationRules
+]
+
+{ #category : #'private - counting' }
+APriori >> calculateCountOfItemset: itemset [
+	"Find the number of transactions that contain all items of the given itemset"
+	
+	^ (transactions select: [ :eachItemset |
+		eachItemset isSupersetOf: itemset ]) size.
+	
+	
+]
+
+{ #category : #'private - statistics' }
+APriori >> calculateStatisticsOfItemset: itemset [
+	"Find the number of transactions that contain all items of the given itemset as well as the probability that a randomly picked transactions contains all items of the given itemset. Save both these numbers in the itemset"
+	
+	itemset count: (self countOfItemset: itemset).
+	itemset support: itemset count / transactions size.
+]
+
+{ #category : #'private - statistics' }
+APriori >> calculateStatisticsOfRule: rule [
+	"Find the number of transactions that contain all items of the itemset proposed by the given rule (union of itemsets on left and right hand sides of the rule) as well as support - the probability that a randomly picked transactions contains all items of that given itemset, confidence - conditional probability of the rule, and lift. Save all those values in the rule"
+	
+	| itemset |
+	itemset := rule asItemset.
+	self calculateStatisticsOfItemset: itemset.
+	self calculateStatisticsOfItemset: rule key.
+	self calculateStatisticsOfItemset: rule value.
+	
+	rule count: itemset count.
+	rule support: itemset support.
+	rule confidence: itemset count / rule key count.
+	rule lift: itemset support / (rule key support * rule value support).
+	
+	
+]
+
+{ #category : #'private - recommendation' }
 APriori >> candidatesOfSize: k [
 	^ (frequentItemsets at: k - 1) flatCollect: [ :itemset1 |
 		(frequentItemsets at: k - 1)
@@ -40,43 +83,88 @@ APriori >> confidenceThreshold [
 	^ confidenceThreshold
 ]
 
-{ #category : #accessing }
-APriori >> confidenceThreshold: anObject [
-	confidenceThreshold := anObject
+{ #category : #'lazy counting' }
+APriori >> countOfItemset: itemset [
+	| items |
+	"we convert itemset to array because we only need to compare two itemsets by their items, not their counts and supports"
+	items := itemset asArray.
+	
+	(countDictionary includesKey: items) ifFalse: [
+		countDictionary at: items put: (self calculateCountOfItemset: itemset) ].
+	
+	^ countDictionary at: items
 ]
 
-{ #category : #'as yet unclassified' }
-APriori >> frequentItemsetsIn: transactions [
+{ #category : #'private - recommendation' }
+APriori >> findAssociationRules [
+	| itemsets |
+	itemsets := self frequentItemsets.
+	
+	associationRules := itemsets flatCollect: [ :itemset |
+		itemset allAssociationRules select: [ :rule |
+			self calculateStatisticsOfRule: rule.
+			rule confidence >= self confidenceThreshold ] ]
+]
+
+{ #category : #'private - recommendation' }
+APriori >> findFrequentItemsets [
 	| k frequentItemsetsOfSizeK |
 	
 	k := 1.
 	frequentItemsets := Dictionary new.
 	
-	frequentItemsetsOfSizeK := (self frequentItemsetsOfSizeOneIn: transactions).
+	frequentItemsetsOfSizeK := self findFrequentItemsetsOfSizeOne.
 	
 	[ frequentItemsetsOfSizeK isEmpty ] whileFalse: [
 		frequentItemsets at: k put: frequentItemsetsOfSizeK.
 		k := k + 1.
-		frequentItemsetsOfSizeK := self frequentItemsetsOfSize: k in: transactions ].
+		frequentItemsetsOfSizeK := self findFrequentItemsetsOfSize: k ].
 
-	^ frequentItemsets values copyWithoutFirst flatCollect: #yourself.
+	frequentItemsets := frequentItemsets values copyWithoutFirst flatCollect: #yourself.
 ]
 
-{ #category : #'as yet unclassified' }
-APriori >> frequentItemsetsOfSize: k in: transactions [
+{ #category : #private }
+APriori >> findFrequentItemsetsOfSize: k [
 	| candidates |
 	candidates := self candidatesOfSize: k.
+	
+	candidates do: [ :itemset | self calculateStatisticsOfItemset: itemset ].
+	
 	^ candidates select: [ :itemset |
-		(itemset supportIn: transactions) >= self supportThreshold ].
+		itemset support >= self supportThreshold ].
 ]
 
-{ #category : #'as yet unclassified' }
-APriori >> frequentItemsetsOfSizeOneIn: transactions [
-	| uniqueItems itemsetsOfSizeOne |
+{ #category : #private }
+APriori >> findFrequentItemsetsOfSizeOne [
+	| uniqueItems itemsets |
+	
 	uniqueItems := (transactions flatCollect: #yourself) asSet.
-	itemsetsOfSizeOne := uniqueItems collect: [ :item | { item } asItemset ].
-	^ itemsetsOfSizeOne select: [ :itemset |
-		(itemset supportIn: transactions) >= self supportThreshold ].
+	itemsets := uniqueItems collect: [ :item | { item } asItemset ].
+	
+	itemsets do: [ :itemset | self calculateStatisticsOfItemset: itemset ].
+	
+	^ itemsets select: [ :itemset |
+		itemset support >= self supportThreshold ].
+]
+
+{ #category : #'api - lazy recommendation' }
+APriori >> frequentItemsets [
+	frequentItemsets ifNil: [ self findFrequentItemsets ].
+	^ frequentItemsets
+]
+
+{ #category : #initialization }
+APriori >> initialize [ 
+	super initialize.
+	countDictionary := Dictionary new.
+]
+
+{ #category : #initialization }
+APriori >> initializeTransactions: aCollectionOfItemsets supportThreshold: aSupportThreshold confidenceThreshold: aConfidenceThreshold [
+	transactions := aCollectionOfItemsets.
+	supportThreshold := aSupportThreshold.
+	confidenceThreshold := aConfidenceThreshold.
+	^ self
 ]
 
 { #category : #accessing }
@@ -85,6 +173,6 @@ APriori >> supportThreshold [
 ]
 
 { #category : #accessing }
-APriori >> supportThreshold: anObject [
-	supportThreshold := anObject
+APriori >> transactions [
+	^ transactions
 ]

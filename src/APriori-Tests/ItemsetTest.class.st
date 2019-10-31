@@ -153,27 +153,3 @@ ItemsetTest >> testPrintOn [
 	
 	self assert: actual equals: expected.
 ]
-
-{ #category : #tests }
-ItemsetTest >> testSupportIn [
-	| expected actual |
-	
-	expected := { 1/6 . 1/6 . 1/3 . 1/3 . 1/6 . 1/6 }.
-	actual := transactions collect: [ :eachItemset |
-		eachItemset supportIn: transactions ].
-	
-	self assert: actual equals: expected.
-	
-]
-
-{ #category : #tests }
-ItemsetTest >> testSupportInZero [
-	| nonexistingItemset1 nonexistingItemset2 |
-	
-	nonexistingItemset1 := #(nonexisting items) asItemset.
-	nonexistingItemset2 := #(bread cereal) asItemset. "existing items but nonexisting combination"
-	
-	self assert: (nonexistingItemset1 supportIn: transactions) equals: 0.
-	self assert: (nonexistingItemset2 supportIn: transactions) equals: 0.
-	
-]

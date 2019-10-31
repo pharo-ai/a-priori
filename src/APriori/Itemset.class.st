@@ -2,6 +2,10 @@ Class {
 	#name : #Itemset,
 	#superclass : #Array,
 	#type : #variable,
+	#instVars : [
+		'count',
+		'support'
+	],
 	#category : #APriori
 }
 
@@ -11,6 +15,20 @@ Itemset class >> withAll: aCollection [
 	itemset := super withAll: aCollection.
 	itemset sort.
 	^ itemset.
+]
+
+{ #category : #comparing }
+Itemset >> = anObject [
+	(super = anObject)
+		ifFalse: [ ^ false ].
+		
+	(self count = anObject count)
+		ifFalse: [ ^ false ].
+	
+	(self support = anObject support)
+		ifFalse: [ ^ false ].
+		
+	^ true
 ]
 
 { #category : #'as yet unclassified' }
@@ -38,7 +56,7 @@ Itemset >> allSubsets [
 	"Generate all possible nonempty itemsets that are the subset of this itemset.
 	Example:
 	{1, 2, 3} => {1}, {2}, {3}, {1, 2}, {1, 3}, {2, 3}"
-	^ (self asArray combinations collect: #asItemset) copyWithout: self
+	^ (self combinations copyWithout: (self asArray)) collect: #asItemset
 ]
 
 { #category : #converting }
@@ -55,6 +73,16 @@ Itemset >> canBeJoinedWith: anotherItemset [
 	
 	^ (itemset1WithoutLast = itemset2WithoutLast) and: (self last < anotherItemset last).
 	
+]
+
+{ #category : #accessing }
+Itemset >> count [
+	^ count
+]
+
+{ #category : #accessing }
+Itemset >> count: anObject [
+	count := anObject
 ]
 
 { #category : #'as yet unclassified' }
@@ -92,13 +120,12 @@ Itemset >> printOn: aStream [
 		nextPut: $}.
 ]
 
-{ #category : #'as yet unclassified' }
-Itemset >> supportIn: transactions [
-	"The probability that a random transaction (itemset) taken from a given collection of transactions contains all items of this itemset (self)"
-	| transactionsThatIncludeThisItemset |
-	
-	transactionsThatIncludeThisItemset := transactions select: [ :eachItemset |
-		eachItemset isSupersetOf: self ].
-	
-	^ transactionsThatIncludeThisItemset size / transactions size
+{ #category : #accessing }
+Itemset >> support [
+	^ support
+]
+
+{ #category : #accessing }
+Itemset >> support: anObject [
+	support := anObject
 ]
