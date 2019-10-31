@@ -136,4 +136,4 @@ This will produce the following 15 rules:
 {other vegetables, whipped/sour cream} => {whole milk}
 ```
 
-Which means that we should recommend `other vegetables` to the customers who purchased `citrus fruit` and `root vegetables`. And for those who took `curd` and `yogurt` we will recommend the `whole milk`.
+Which means that we will recommend `other vegetables` to the customers who purchased `citrus fruit` and `root vegetables`. And for those who took `curd` and `yogurt` we will recommend the `whole milk`.
