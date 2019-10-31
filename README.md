@@ -84,3 +84,56 @@ rule support. "1/3"
 rule confidence. "2/3"
 rule lift. "4/3"
 ```
+
+## Real-world example
+
+Download the [Groceries dataset](https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/groceries.csv). It contains 1 month (30 days) of real-world point-of-sale transaction data from a typical local grocery outlet. The dataset contains 9835 transactions and the items are aggregated to 169 categories. We load the contents of `groceries.csv` into Pharo, split it by lines and then by commas to get a collection of transactions:
+
+```Smalltalk
+file := '/path/to/groceries.csv' asFileReference.
+lines := Character lf split: file contents.
+groceries := lines collect: [ :line | $, split: line ].
+```
+
+Now we initialize an A-Priori algorithm with support threshold of 1% and confidence threshold of 50%:
+
+```Smalltalk
+apriori := APriori
+  transactions: groceries
+  supportThreshold: 0.01
+  confidenceThreshold: 0.5.
+```
+
+We generate association rules (this can take about a minute):
+
+```Smalltalk
+rules := apriori associationRules.
+```
+
+And sort them by lift in descending order:
+
+```Smalltalk
+rules sort: [ :a :b | a lift > b lift ].
+```
+
+This will produce the following 15 rules:
+
+```Smalltalk
+{citrus fruit, root vegetables} => {other vegetables}
+{root vegetables, tropical fruit} => {other vegetables}
+{rolls/buns, root vegetables} => {other vegetables}
+{root vegetables, yogurt} => {other vegetables}
+{curd, yogurt} => {whole milk}
+{butter, other vegetables} => {whole milk}
+{root vegetables, tropical fruit} => {whole milk}
+{root vegetables, yogurt} => {whole milk}
+{domestic eggs, other vegetables} => {whole milk}
+{whipped/sour cream, yogurt} => {whole milk}
+{rolls/buns, root vegetables} => {whole milk}
+{other vegetables, pip fruit} => {whole milk}
+{tropical fruit, yogurt} => {whole milk}
+{other vegetables, yogurt} => {whole milk}
+{other vegetables, whipped/sour cream} => {whole milk}
+```
+
+Which means that we should recommend `other vegetables` to the customers who purchased `citrus fruit` and `root vegetables`. And for those who took `curd` and `yogurt` we will recommend the `whole milk`.
