@@ -19,6 +19,7 @@ Itemset class >> withAll: aCollection [
 
 { #category : #comparing }
 Itemset >> = anObject [
+	"Itemset inherits from Array, so we override the equality operation to test not only the equality of the items, but also the count and support"
 	(super = anObject)
 		ifFalse: [ ^ false ].
 		
@@ -33,6 +34,13 @@ Itemset >> = anObject [
 
 { #category : #'as yet unclassified' }
 Itemset >> => anotherItemset [
+	"An opeartor for creating an association rule.
+	
+	Example:
+	#(a b c) asItemset => #(d e) asItemset.
+	
+	This will produce an association rule {a, b, c} => {d, e}"
+	
 	^ (self -> anotherItemset) asAssociationRule
 ]
 
@@ -66,6 +74,7 @@ Itemset >> asArray [
 
 { #category : #testing }
 Itemset >> canBeJoinedWith: anotherItemset [
+	"Test if this itemset (self) can be joined with anotherItemset. For that the two itemsets of size k must share the first k-1 elements and the last element of anotherItemset must be greater than the last element of self"
 	| itemset1WithoutLast itemset2WithoutLast |
 	
 	itemset1WithoutLast := self copyFrom: 1 to: self size - 1.
@@ -93,6 +102,7 @@ Itemset >> isSupersetOf: anotherItemset [
 
 { #category : #testing }
 Itemset >> joinWith: anotherItemset [
+	"Join yourself with another itemset. This operation should only be performed after we test that two itemsets can be joined (see canBeJoinedWith:). This means that two itemsets of size k have the same first k-1 elements and the last element of anotherItemset is greater than the last element of self. We join them by creating an itemset of size k+1 where first k-1 elements are the same as in self (or anotherItemset), element k is the last element of self, and element k+1 is the last element of anotherItemset (this way, the elements of a new itemset are sorted in ascending order)"
 	| itemset1 itemset2 itemsetWithoutLast |
 	
 	itemset1 := self asOrderedCollection.

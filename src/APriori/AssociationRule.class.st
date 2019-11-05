@@ -12,6 +12,7 @@ Class {
 
 { #category : #converting }
 AssociationRule >> = anObject [
+	"AssociationRule inherits from Association, so we override the equality operator to test not only the equality of association's key and value, but also the equality of count, support, confidence, and lift"
 	(super = anObject)
 		ifFalse: [ ^ false ].
 		
@@ -20,6 +21,9 @@ AssociationRule >> = anObject [
 
 { #category : #converting }
 AssociationRule >> asItemset [
+	"Association rule can be turned into an itemset by uniting its key and value itemsets:
+	(#(a b c) asItemset => #(d e) asItemset) asItemset >>> #(a b c d e) asItemset"
+	
 	^ self key union: self value
 ]
 

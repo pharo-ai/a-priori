@@ -20,6 +20,7 @@ ItemsetEncoder class >> new [
 
 { #category : #converting }
 ItemsetEncoder >> decodeItemset: itemset [
+	"Decode an integer itemset by replacing integers with the corresponding items from the vocabulary (found by index). Return the decoded itemset. This operation preserves the count and support of an itemset"
 	| decodedItemset |
 	
 	decodedItemset := itemset collect: [ :i |
@@ -33,6 +34,7 @@ ItemsetEncoder >> decodeItemset: itemset [
 
 { #category : #converting }
 ItemsetEncoder >> decodeRule: rule [
+	"Decode an association rule by decoding its left and right hand side itemsets. Return the decoded rule. This operation preserves the count, support, confidence, and lift of an association rule"
 	| decodedRule |
 	
 	decodedRule := ((self decodeItemset: rule key) => (self decodeItemset: rule value)).
@@ -48,6 +50,7 @@ ItemsetEncoder >> decodeRule: rule [
 
 { #category : #converting }
 ItemsetEncoder >> encodeItemset: itemset [
+	"Encode itemset by replacing all its items with their indices in the vocabulary. Returt the encoded itemset with integers. This operation preserves the count and support of an itemset"
 	| encodedItemset |
 	
 	encodedItemset := itemset collect: [ :item |
@@ -61,6 +64,7 @@ ItemsetEncoder >> encodeItemset: itemset [
 
 { #category : #converting }
 ItemsetEncoder >> encodeRule: rule [
+	"Encode an association rule by encoding its left and right hand side itemsets. Return the encoded rule. This operation preserves the count, support, confidence, and lift of an association rule"
 	| encodedRule |
 	
 	encodedRule := ((self encodeItemset: rule key) => (self encodeItemset: rule value)).
@@ -76,6 +80,7 @@ ItemsetEncoder >> encodeRule: rule [
 
 { #category : #initialization }
 ItemsetEncoder >> initializeTransactions: transactions [
+	"When encoder is initialized with transactions, it saves unique items into vocabulary. Then it can encode each item by replacing it with its integer index in the vocabulary and decode it by finding the item in the vocabulary by its index"
 	vocabulary := (transactions flatCollect: #yourself) asSet asArray.
 	^ self
 ]
