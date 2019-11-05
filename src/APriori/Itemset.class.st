@@ -1,3 +1,32 @@
+"
+I am a model of an itemset - a set of items that may appear in transactions.
+
+I store the set of items, I know my count and support:
+
+* count - number of transactions that contain all of my items
+* support - probability that a randomly chosen transaction will contain all of my items
+
+I am used by the APriori algorithm to find frequent itemsets and generate association rules. I am also part of an AssociationRule, whose key and value are my instances.
+
+You should only use the following two messages to ask for my count and support. All other messages are used by the Apriori algorithm.
+
+- count  
+- support 
+
+Here is an example of how you can create my instances:
+
+itemset := #(bread butter) asItemset.
+
+I am printed as a set of my items:
+
+'{bread, butter}'
+ 
+You can use my => message to create instances of AssociationRule:
+
+rule := #(bread butter) asItemset => #(avocado) asItemset.
+
+I am implemented on top of an Array and not Set because the order of my items matters and it is very important that they can be accessed quickly.
+"
 Class {
 	#name : #Itemset,
 	#superclass : #Array,
