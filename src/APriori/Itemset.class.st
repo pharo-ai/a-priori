@@ -89,6 +89,15 @@ Itemset >> allAssociationRules [
 ]
 
 { #category : #'as yet unclassified' }
+Itemset >> allLargestSubsets [
+	"Generate all subsets of size k-1
+	Example:
+	{1, 2, 3} => {1, 2}, {1, 3}, {2, 3}"
+	^ self collect: [ :item |
+		self copyWithout: item ].
+]
+
+{ #category : #'as yet unclassified' }
 Itemset >> allSubsets [
 	"Generate all possible nonempty itemsets that are the subset of this itemset.
 	Example:

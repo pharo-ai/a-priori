@@ -97,10 +97,10 @@ APriori >> calculateStatisticsOfRule: rule [
 { #category : #'private - recommendation' }
 APriori >> candidatesOfSize: k [
 	"Find all candidate itemsets of size k by joining the set of frequent itemsets of size k-1 with iteself"
-	^ (frequentItemsets at: k - 1) flatCollect: [ :itemset1 |
-		(frequentItemsets at: k - 1)
-			select: [ :itemset2 | itemset1 canBeJoinedWith: itemset2 ]
-			thenCollect: [ :itemset2 | itemset1 joinWith: itemset2 ] ].
+	| candidates |
+	candidates := self joinFrequentItemsetsOfSize: k - 1.
+	candidates := self pruneCandidates: candidates.
+	^ candidates
 ]
 
 { #category : #accessing }
@@ -228,6 +228,25 @@ APriori >> initializeTransactions: aCollectionOfItemsets supportThreshold: aSupp
 	encoder := ItemsetEncoder basedOn: transactions.
 	self encodeTransactions.
 	^ self
+]
+
+{ #category : #'private - recommendation' }
+APriori >> joinFrequentItemsetsOfSize: k [
+	"Join step of candidate generation"
+	^ (frequentItemsets at: k) flatCollect: [ :itemset1 |
+		(frequentItemsets at: k)
+			select: [ :itemset2 | itemset1 canBeJoinedWith: itemset2 ]
+			thenCollect: [ :itemset2 | itemset1 joinWith: itemset2 ] ].
+]
+
+{ #category : #'private - recommendation' }
+APriori >> pruneCandidates: candidates [ 
+	"Prune step of candidate generation"
+
+	^ candidates select: [ :itemset |
+		itemset allLargestSubsets allSatisfy: [ :eachSubset |
+			(frequentItemsets at: eachSubset size) anySatisfy: [ :aFrequentItemset |
+				aFrequentItemset asArray = eachSubset asArray ] ] ].
 ]
 
 { #category : #accessing }

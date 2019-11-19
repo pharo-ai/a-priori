@@ -46,6 +46,29 @@ ItemsetTest >> testAllAssociationRules [
 ]
 
 { #category : #tests }
+ItemsetTest >> testAllLargestSubsets [
+	| itemset expected actual |
+	
+	itemset := #(bread avocado butter bananas) asItemset.
+	
+	expected := #(
+		(bread avocado butter)
+		(bread avocado bananas)
+		(bread butter bananas)
+		(avocado butter bananas)
+	) collect: #asItemset.
+	
+	actual := itemset allLargestSubsets.
+	
+	"We don't care about the order"
+	expected := expected asSet.
+	actual := actual asSet.
+	
+	self assert: actual equals: expected.
+	
+]
+
+{ #category : #tests }
 ItemsetTest >> testAllSubsets [
 	| itemset expected actual |
 	
