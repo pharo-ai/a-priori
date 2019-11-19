@@ -175,8 +175,8 @@ APriori >> findFrequentItemsets [
 		frequentItemsets at: k put: frequentItemsetsOfSizeK.
 		k := k + 1.
 		frequentItemsetsOfSizeK := self findFrequentItemsetsOfSize: k ].
-
-	frequentItemsets := frequentItemsets values copyWithoutFirst flatCollect: #yourself.
+	
+	frequentItemsets := frequentItemsets values flatCollect: #yourself
 ]
 
 { #category : #private }

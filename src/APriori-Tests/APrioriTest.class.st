@@ -233,19 +233,45 @@ APrioriTest >> testCalculateValueSupportOfRule [
 
 { #category : #tests }
 APrioriTest >> testFrequentItemsets [
-	| itemset1 itemset2 expected actual |
+	| expected actual |
 	
-	itemset1 := #(eggs bacon) asItemset
-		count: 2;
-		support: 1/3;
-		yourself.
+	expected := {
+		#(eggs) asItemset
+			count: 3;
+			support: 1/2;
+			yourself .
+			
+		#(milk) asItemset
+			count: 2;
+			support: 1/3;
+			yourself .
+			
+		#(butter) asItemset
+			count: 3;
+			support: 1/2;
+			yourself .
+			
+		#(bacon) asItemset
+			count: 2;
+			support: 1/3;
+			yourself .
+			
+		#(bread) asItemset
+			count: 3;
+			support: 1/2;
+			yourself .
+			
+		#(eggs bacon) asItemset
+			count: 2;
+			support: 1/3;
+			yourself .
 	
-	itemset2 := #(bread butter) asItemset
-		count: 2;
-		support: 1/3;
-		yourself.
+		#(bread butter) asItemset
+			count: 2;
+			support: 1/3;
+			yourself .
+	}.
 		
-	expected := { itemset1 . itemset2 }.
 	actual := apriori frequentItemsets.
 	
 	"We don't care about the order"
