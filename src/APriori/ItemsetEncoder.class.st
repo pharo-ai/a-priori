@@ -33,6 +33,13 @@ ItemsetEncoder >> decodeItemset: itemset [
 ]
 
 { #category : #converting }
+ItemsetEncoder >> decodeItemsets: aCollectionOfItemsets [
+	"Decode each item of each itemset in the collection and return the result"
+	^ aCollectionOfItemsets collect: [ :itemset |
+		self decodeItemset: itemset ].
+]
+
+{ #category : #converting }
 ItemsetEncoder >> decodeRule: rule [
 	"Decode an association rule by decoding its left and right hand side itemsets. Return the decoded rule. This operation preserves the count, support, confidence, and lift of an association rule"
 	| decodedRule |
@@ -49,6 +56,13 @@ ItemsetEncoder >> decodeRule: rule [
 ]
 
 { #category : #converting }
+ItemsetEncoder >> decodeRules: aCollectionOfRules [
+	"Decode each item in both left and right itemsets of each rule in the collection and return the result"
+	^ aCollectionOfRules collect: [ :rule |
+		self decodeRule: rule ].
+]
+
+{ #category : #converting }
 ItemsetEncoder >> encodeItemset: itemset [
 	"Encode itemset by replacing all its items with their indices in the vocabulary. Returt the encoded itemset with integers. This operation preserves the count and support of an itemset"
 	| encodedItemset |
@@ -60,6 +74,13 @@ ItemsetEncoder >> encodeItemset: itemset [
 	encodedItemset support: itemset support.
 	
 	^ encodedItemset
+]
+
+{ #category : #converting }
+ItemsetEncoder >> encodeItemsets: aCollectionOfItemsets [
+	"Encode each item of each itemset in the collection and return the result"
+	^ aCollectionOfItemsets collect: [ :itemset |
+		self encodeItemset: itemset ].
 ]
 
 { #category : #converting }
@@ -78,9 +99,23 @@ ItemsetEncoder >> encodeRule: rule [
 	^ encodedRule
 ]
 
+{ #category : #converting }
+ItemsetEncoder >> encodeRules: aCollectionOfRules [
+	"Encode each item in both left and right itemsets of each rule in the collection and return the result"
+	^ aCollectionOfRules collect: [ :rule |
+		self encodeRule: rule ].
+]
+
 { #category : #initialization }
 ItemsetEncoder >> initializeTransactions: transactions [
 	"When encoder is initialized with transactions, it saves unique items into vocabulary. Then it can encode each item by replacing it with its integer index in the vocabulary and decode it by finding the item in the vocabulary by its index"
-	vocabulary := (transactions flatCollect: #yourself) asSet asArray.
-	^ self
+	| items |
+	items := transactions flatCollect: #yourself.
+	
+	"We could write items asSet, but we want to keep the order in which items appear"
+	vocabulary := OrderedCollection new.
+	
+	items do: [ :each |
+		(vocabulary includes: each) ifFalse: [ 
+			vocabulary add: each ] ].
 ]

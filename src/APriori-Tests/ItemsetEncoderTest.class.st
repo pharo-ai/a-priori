@@ -18,8 +18,8 @@ ItemsetEncoderTest >> setUp [
 { #category : #tests }
 ItemsetEncoderTest >> testDecodeItemset [
 	| itemset expected actual |
-	itemset := #(2 5) asItemset.
-	expected := #(bread butter) asItemset.
+	itemset := #(3 6) asItemset.
+	expected := #(butter bread) asItemset.
 	actual := encoder decodeItemset: itemset.
 	self assert: actual equals: expected.
 ]
@@ -28,7 +28,7 @@ ItemsetEncoderTest >> testDecodeItemset [
 ItemsetEncoderTest >> testDecodeItemsetCountSupport [
 	| itemset decoded |
 	
-	itemset := #(2 5) asItemset
+	itemset := #(3 6) asItemset
 		count: 10;
 		support: 0.1;
 		yourself.
@@ -40,10 +40,23 @@ ItemsetEncoderTest >> testDecodeItemsetCountSupport [
 ]
 
 { #category : #tests }
+ItemsetEncoderTest >> testDecodeItemsets [
+	| itemsets expected actual |
+	itemsets := {
+		#(3 6) asItemset .
+		#(2 4) asItemset }.
+	expected := {
+		#(butter bread) asItemset .
+		#(milk cereal) asItemset }.
+	actual := encoder decodeItemsets: itemsets.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
 ItemsetEncoderTest >> testDecodeRule [
 	| rule expected actual |
-	rule := #(2) asItemset => #(5) asItemset.
-	expected := #(bread) asItemset => #(butter) asItemset.
+	rule := #(3) asItemset => #(6) asItemset.
+	expected := #(butter) asItemset => #(bread) asItemset.
 	actual := encoder decodeRule: rule.
 	self assert: actual equals: expected.
 ]
@@ -52,7 +65,7 @@ ItemsetEncoderTest >> testDecodeRule [
 ItemsetEncoderTest >> testDecodeRuleCountSupportConfidenceLift [
 	| rule decoded |
 	
-	rule := (#(2) asItemset => #(5) asItemset)
+	rule := (#(3) asItemset => #(6) asItemset)
 		count: 10;
 		support: 0.1;
 		confidence: 0.5;
@@ -71,12 +84,12 @@ ItemsetEncoderTest >> testDecodeRuleCountSupportConfidenceLift [
 ItemsetEncoderTest >> testDecodeRuleKeyCountSupport [
 	| itemset1 itemset2 rule decoded |
 	
-	itemset1 := #(2) asItemset
+	itemset1 := #(3) asItemset
 		count: 10;
 		support: 0.1;
 		yourself.
 		
-	itemset2 := #(5) asItemset.
+	itemset2 := #(6) asItemset.
 	rule := itemset1 => itemset2.
 	
 	decoded := encoder decodeRule: rule.
@@ -89,9 +102,9 @@ ItemsetEncoderTest >> testDecodeRuleKeyCountSupport [
 ItemsetEncoderTest >> testDecodeRuleValueCountSupport [
 	| itemset1 itemset2 rule decoded |
 	
-	itemset1 := #(2) asItemset.
+	itemset1 := #(3) asItemset.
 		
-	itemset2 := #(5) asItemset
+	itemset2 := #(6) asItemset
 		count: 10;
 		support: 0.1;
 		yourself.
@@ -107,8 +120,8 @@ ItemsetEncoderTest >> testDecodeRuleValueCountSupport [
 { #category : #tests }
 ItemsetEncoderTest >> testEncodeItemset [
 	| itemset expected actual |
-	itemset := #(bread butter) asItemset.
-	expected := #(2 5) asItemset.
+	itemset := #(butter bread) asItemset.
+	expected := #(3 6) asItemset.
 	actual := encoder encodeItemset: itemset.
 	self assert: actual equals: expected.
 ]
@@ -117,7 +130,7 @@ ItemsetEncoderTest >> testEncodeItemset [
 ItemsetEncoderTest >> testEncodeItemsetCountSupport [
 	| itemset encoded |
 	
-	itemset := #(bread butter) asItemset
+	itemset := #(butter bread) asItemset
 		count: 10;
 		support: 0.1;
 		yourself.
@@ -131,8 +144,8 @@ ItemsetEncoderTest >> testEncodeItemsetCountSupport [
 { #category : #tests }
 ItemsetEncoderTest >> testEncodeRule [
 	| rule expected actual |
-	rule := #(bread) asItemset => #(butter) asItemset.
-	expected := #(2) asItemset => #(5) asItemset.
+	rule := #(butter) asItemset => #(bread) asItemset.
+	expected := #(3) asItemset => #(6) asItemset.
 	actual := encoder encodeRule: rule.
 	self assert: actual equals: expected.
 ]
@@ -141,7 +154,7 @@ ItemsetEncoderTest >> testEncodeRule [
 ItemsetEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
 	| rule encoded |
 	
-	rule := (#(bread) asItemset => #(butter) asItemset)
+	rule := (#(butter) asItemset => #(bread) asItemset)
 		count: 10;
 		support: 0.1;
 		confidence: 0.5;
@@ -160,12 +173,12 @@ ItemsetEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
 ItemsetEncoderTest >> testEncodeRuleKeyCountSupport [
 	| itemset1 itemset2 rule encoded |
 	
-	itemset1 := #(bread) asItemset
+	itemset1 := #(butter) asItemset
 		count: 10;
 		support: 0.1;
 		yourself.
 		
-	itemset2 := #(butter) asItemset.
+	itemset2 := #(bread) asItemset.
 	rule := itemset1 => itemset2.
 	
 	encoded := encoder encodeRule: rule.
@@ -178,9 +191,9 @@ ItemsetEncoderTest >> testEncodeRuleKeyCountSupport [
 ItemsetEncoderTest >> testEncodeRuleValueCountSupport [
 	| itemset1 itemset2 rule encoded |
 	
-	itemset1 := #(bread) asItemset.
+	itemset1 := #(butter) asItemset.
 		
-	itemset2 := #(butter) asItemset
+	itemset2 := #(bread) asItemset
 		count: 10;
 		support: 0.1;
 		yourself.

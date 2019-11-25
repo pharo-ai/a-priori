@@ -38,7 +38,7 @@ AssociationRuleTest >> testPrintOn [
 	stream := String new writeStream.
 	rule printOn: stream.
 	
-	expected := '{butter, eggs, milk} => {avocado, bananas}'.
+	expected := '{eggs, milk, butter} => {avocado, bananas}'.
 	actual := stream contents.
 	
 	self assert: actual equals: expected.

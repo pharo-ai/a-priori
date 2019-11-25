@@ -51,7 +51,7 @@ Class {
 	#category : #APriori
 }
 
-{ #category : #converting }
+{ #category : #comparing }
 AssociationRule >> = anObject [
 	"AssociationRule inherits from Association, so we override the equality operator to test not only the equality of association's key and value, but also the equality of count, support, confidence, and lift"
 	(super = anObject)
@@ -60,12 +60,27 @@ AssociationRule >> = anObject [
 	^ { self count . self support . self confidence . self lift } = { anObject count . anObject support . anObject confidence . anObject lift }
 ]
 
+{ #category : #comparing }
+AssociationRule >> > anotherRule [
+	"Compare two by lift by support. If lift is the same, compare them by confidence, then by support, then by size (size of key + size of value). Used for sorting association rules that are returned by A-Priori algorithm"
+	(self lift ~= anotherRule lift)
+		ifTrue: [ ^ self lift > anotherRule lift].
+		
+	(self confidence ~= anotherRule confidence)
+		ifTrue: [ ^ self confidence > anotherRule confidence].
+		
+	(self support ~= anotherRule support)
+		ifTrue: [ ^ self support > anotherRule support].
+		
+	^ (self key size + self value size) < (anotherRule key size + anotherRule value size).
+]
+
 { #category : #converting }
 AssociationRule >> asItemset [
 	"Association rule can be turned into an itemset by uniting its key and value itemsets:
 	(#(a b c) asItemset => #(d e) asItemset) asItemset >>> #(a b c d e) asItemset"
 	
-	^ self key union: self value
+	^ self key, self value
 ]
 
 { #category : #accessing }

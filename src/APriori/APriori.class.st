@@ -38,7 +38,7 @@ APriori >> associationRules [
 	Meanining that customers who purchased a, b, and c, are also likely to purchase d and e."
 	
 	associationRules ifNil: [ self findAssociationRules ].
-	^ self decodeRules: associationRules
+	^ encoder decodeRules: associationRules
 ]
 
 { #category : #'private - counting' }
@@ -122,27 +122,6 @@ APriori >> countOfItemset: itemset [
 	^ countDictionary at: items
 ]
 
-{ #category : #'private - encoding decoding' }
-APriori >> decodeItemsets: aCollectionOfItemsets [
-	"Decode each item of each itemset in the collection and return the result"
-	^ aCollectionOfItemsets collect: [ :itemset |
-		encoder decodeItemset: itemset ].
-]
-
-{ #category : #'private - encoding decoding' }
-APriori >> decodeRules: aCollectionOfRules [
-	"Decode each item in both left and right itemsets of each rule in the collection and return the result"
-	^ aCollectionOfRules collect: [ :rule |
-		encoder decodeRule: rule ].
-]
-
-{ #category : #'private - encoding decoding' }
-APriori >> encodeTransactions [
-	"Encode each item in every transaction and save the result back into transactions (modifies the transactions collection)"
-	transactions := transactions collect: [ :itemset |
-		encoder encodeItemset: itemset ].
-]
-
 { #category : #accessing }
 APriori >> encoder [ 
 	^ encoder
@@ -158,7 +137,9 @@ APriori >> findAssociationRules [
 	associationRules := itemsets flatCollect: [ :itemset |
 		itemset allAssociationRules select: [ :rule |
 			self calculateStatisticsOfRule: rule.
-			rule confidence >= self confidenceThreshold ] ]
+			rule confidence >= self confidenceThreshold ] ].
+	
+	associationRules sort: [ :a :b | a > b ].
 ]
 
 { #category : #'private - recommendation' }
@@ -176,7 +157,8 @@ APriori >> findFrequentItemsets [
 		k := k + 1.
 		frequentItemsetsOfSizeK := self findFrequentItemsetsOfSize: k ].
 	
-	frequentItemsets := frequentItemsets values flatCollect: #yourself
+	frequentItemsets := frequentItemsets values flatCollect: #yourself.
+	frequentItemsets sort: [ :a :b | a > b ].
 ]
 
 { #category : #private }
@@ -209,7 +191,7 @@ APriori >> findFrequentItemsetsOfSizeOne [
 APriori >> frequentItemsets [
 	"Find frequent itemsets (the ones that pass the support threshold) and save the result. If frequent itemsets have already been fond before, we simply return them without performing the same calculations again. This is especially useful when we find frequent itemsets AND association rules. Because to find association rules we need to find frequent itemsets (which is the most time-consuming operation), so we can use the ones that were found before."
 	frequentItemsets ifNil: [ self findFrequentItemsets ].
-	^ self decodeItemsets: frequentItemsets
+	^ encoder decodeItemsets: frequentItemsets
 ]
 
 { #category : #initialization }
@@ -226,7 +208,7 @@ APriori >> initializeTransactions: aCollectionOfItemsets supportThreshold: aSupp
 	confidenceThreshold := aConfidenceThreshold.
 	
 	encoder := ItemsetEncoder basedOn: transactions.
-	self encodeTransactions.
+	transactions := encoder encodeItemsets: transactions.
 	^ self
 ]
 

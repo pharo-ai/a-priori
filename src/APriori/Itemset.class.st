@@ -38,14 +38,6 @@ Class {
 	#category : #APriori
 }
 
-{ #category : #'instance creation' }
-Itemset class >> withAll: aCollection [
-	| itemset |
-	itemset := super withAll: aCollection.
-	itemset sort.
-	^ itemset.
-]
-
 { #category : #comparing }
 Itemset >> = anObject [
 	"Itemset inherits from Array, so we override the equality operation to test not only the equality of the items, but also the count and support"
@@ -73,6 +65,15 @@ Itemset >> => anotherItemset [
 	^ (self -> anotherItemset) asAssociationRule
 ]
 
+{ #category : #comparing }
+Itemset >> > anotherItemset [
+	"Compare two itemsets by support. If support is the same, compare them by size (number of items). Used for sorting frequent itemsets that are returned by A-Priori algorithm"
+	(self support ~= anotherItemset support)
+		ifTrue: [ ^ self support > anotherItemset support].
+		
+	^ self size < anotherItemset size.
+]
+
 { #category : #'as yet unclassified' }
 Itemset >> allAssociationRules [
 	"Generate all possible association rules from this itemset.
@@ -84,8 +85,11 @@ Itemset >> allAssociationRules [
 		{1, 2} => {3}
 		{1, 3} => {2}
 		{2, 3} => {1}"
+	| difference |
+	
 	^ self allSubsets collect: [ :eachSubset |
-		eachSubset => (self difference: eachSubset) ].
+		difference := self reject: [ :item | eachSubset includes: item ].
+		eachSubset => difference ].
 ]
 
 { #category : #'as yet unclassified' }
@@ -93,7 +97,7 @@ Itemset >> allLargestSubsets [
 	"Generate all subsets of size k-1
 	Example:
 	{1, 2, 3} => {1, 2}, {1, 3}, {2, 3}"
-	^ self collect: [ :item |
+	^ self asArray collect: [ :item |
 		self copyWithout: item ].
 ]
 
@@ -115,8 +119,8 @@ Itemset >> canBeJoinedWith: anotherItemset [
 	"Test if this itemset (self) can be joined with anotherItemset. For that the two itemsets of size k must share the first k-1 elements and the last element of anotherItemset must be greater than the last element of self"
 	| itemset1WithoutLast itemset2WithoutLast |
 	
-	itemset1WithoutLast := self copyFrom: 1 to: self size - 1.
-	itemset2WithoutLast := anotherItemset copyFrom: 1 to: anotherItemset size - 1.
+	itemset1WithoutLast := self asArray copyFrom: 1 to: self size - 1.
+	itemset2WithoutLast := anotherItemset asArray copyFrom: 1 to: anotherItemset size - 1.
 	
 	^ (itemset1WithoutLast = itemset2WithoutLast) and: (self last < anotherItemset last).
 	
@@ -141,17 +145,14 @@ Itemset >> isSupersetOf: anotherItemset [
 { #category : #testing }
 Itemset >> joinWith: anotherItemset [
 	"Join yourself with another itemset. This operation should only be performed after we test that two itemsets can be joined (see canBeJoinedWith:). This means that two itemsets of size k have the same first k-1 elements and the last element of anotherItemset is greater than the last element of self. We join them by creating an itemset of size k+1 where first k-1 elements are the same as in self (or anotherItemset), element k is the last element of self, and element k+1 is the last element of anotherItemset (this way, the elements of a new itemset are sorted in ascending order)"
-	| itemset1 itemset2 itemsetWithoutLast |
+	| itemsetWithoutLast |
 	
-	itemset1 := self asOrderedCollection.
-	itemset2 := anotherItemset asOrderedCollection.
-	
-	itemsetWithoutLast := itemset1 copyFrom: 1 to: itemset1 size - 1.
+	itemsetWithoutLast := self copyFrom: 1 to: self size - 1.
 	
 	^ (OrderedCollection
 		withAll: itemsetWithoutLast)
-		add: itemset1 last;
-		add: itemset2 last;
+		add: self last;
+		add: anotherItemset last;
 		asItemset.
 	
 ]

@@ -43,40 +43,36 @@ APrioriTest >> testAssociationRules [
 		support: 1/2;
 		yourself.
 		
-	rule1 := (itemsetBread => itemsetButter)
-		count: 2;
-		support: 1/3;
-		confidence: 2/3;
-		lift: 4/3;
-		yourself.
-		
-	rule2 := (itemsetButter => itemsetBread)
-		count: 2;
-		support: 1/3;
-		confidence: 2/3;
-		lift: 4/3;
-		yourself.
-		
-	rule3 := (itemsetBacon => itemsetEggs)
+	rule1 := (itemsetBacon => itemsetEggs)
 		count: 2;
 		support: 1/3;
 		confidence: 1;
 		lift: 2;
 		yourself.
 		
-	rule4 := (itemsetEggs => itemsetBacon)
+	rule2 := (itemsetEggs => itemsetBacon)
 		count: 2;
 		support: 1/3;
 		confidence: 2/3;
 		lift: 2;
 		yourself.
 		
+	rule3 := (itemsetBread => itemsetButter)
+		count: 2;
+		support: 1/3;
+		confidence: 2/3;
+		lift: 4/3;
+		yourself.
+		
+	rule4 := (itemsetButter => itemsetBread)
+		count: 2;
+		support: 1/3;
+		confidence: 2/3;
+		lift: 4/3;
+		yourself.
+		
 	expected := { rule1 . rule2 . rule3 . rule4 }.
 	actual := apriori associationRules.
-	
-	"We don't care about the order"
-	expected := expected asSet.
-	actual := actual asSet.
 	
 	self assert: actual equals: expected.
 ]
@@ -240,13 +236,13 @@ APrioriTest >> testFrequentItemsets [
 			count: 3;
 			support: 1/2;
 			yourself .
-			
-		#(milk) asItemset
-			count: 2;
-			support: 1/3;
+		
+		#(butter) asItemset
+			count: 3;
+			support: 1/2;
 			yourself .
 			
-		#(butter) asItemset
+		#(bread) asItemset
 			count: 3;
 			support: 1/2;
 			yourself .
@@ -256,27 +252,23 @@ APrioriTest >> testFrequentItemsets [
 			support: 1/3;
 			yourself .
 			
-		#(bread) asItemset
-			count: 3;
-			support: 1/2;
+		#(milk) asItemset
+			count: 2;
+			support: 1/3;
 			yourself .
 			
 		#(eggs bacon) asItemset
 			count: 2;
 			support: 1/3;
 			yourself .
-	
-		#(bread butter) asItemset
+			
+		#(butter bread) asItemset
 			count: 2;
 			support: 1/3;
 			yourself .
 	}.
 		
 	actual := apriori frequentItemsets.
-	
-	"We don't care about the order"
-	expected := expected asSet.
-	actual := actual asSet.
 	
 	self assert: actual equals: expected.
 ]

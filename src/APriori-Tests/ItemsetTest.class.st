@@ -52,18 +52,13 @@ ItemsetTest >> testAllLargestSubsets [
 	itemset := #(bread avocado butter bananas) asItemset.
 	
 	expected := #(
-		(bread avocado butter)
-		(bread avocado bananas)
-		(bread butter bananas)
 		(avocado butter bananas)
+		(bread butter bananas)
+		(bread avocado bananas)
+		(bread avocado butter)
 	) collect: #asItemset.
 	
-	actual := itemset allLargestSubsets.
-	
-	"We don't care about the order"
-	expected := expected asSet.
-	actual := actual asSet.
-	
+	actual := itemset allLargestSubsets.	
 	self assert: actual equals: expected.
 	
 ]
@@ -92,11 +87,6 @@ ItemsetTest >> testAllSubsets [
 	) collect: #asItemset.
 	
 	actual := itemset allSubsets.
-	
-	"We don't care about the order"
-	expected := expected asSet.
-	actual := actual asSet.
-	
 	self assert: actual equals: expected.
 	
 ]
@@ -107,7 +97,7 @@ ItemsetTest >> testAsArray [
 	array := #(bread butter avocado).
 	itemset := array asItemset.
 	actual := itemset asArray.
-	expected := array sorted.
+	expected := array.
 	self assert: actual equals: expected.
 ]
 
@@ -140,17 +130,6 @@ ItemsetTest >> testIsSupersetOf [
 ]
 
 { #category : #tests }
-ItemsetTest >> testItemsetIsSorted [
-	| itemset expected actual |
-	
-	itemset := #(g d a f h b i e c j) asItemset.
-	expected := #(a b c d e f g h i j).
-	actual := itemset asArray.
-	
-	self assert: actual equals: expected
-]
-
-{ #category : #tests }
 ItemsetTest >> testJoinWith [
 	| itemset1 itemset2 expected actual |
 	
@@ -171,7 +150,7 @@ ItemsetTest >> testPrintOn [
 	stream := String new writeStream.
 	itemset printOn: stream.
 	
-	expected := '{butter, eggs, milk}'.
+	expected := '{eggs, milk, butter}'.
 	actual := stream contents.
 	
 	self assert: actual equals: expected.
