@@ -71,7 +71,7 @@ APrioriTest >> testAssociationRules [
 		lift: 4/3;
 		yourself.
 		
-	expected := { rule1 . rule2 . rule3 . rule4 }.
+	expected := AssociationRulesCollection withAll: { rule1 . rule2 . rule3 . rule4 }.
 	actual := apriori associationRules.
 	
 	self assert: actual equals: expected.
@@ -231,7 +231,7 @@ APrioriTest >> testCalculateValueSupportOfRule [
 APrioriTest >> testFrequentItemsets [
 	| expected actual |
 	
-	expected := {
+	expected := ItemsetsCollection withAll: {
 		#(eggs) asItemset
 			count: 3;
 			support: 1/2;

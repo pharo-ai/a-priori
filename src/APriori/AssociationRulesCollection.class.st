@@ -1,12 +1,6 @@
 Class {
 	#name : #AssociationRulesCollection,
 	#superclass : #OrderedCollection,
-	#instVars : [
-		'count',
-		'support',
-		'confidence',
-		'lift'
-	],
 	#category : #APriori
 }
 
@@ -20,14 +14,14 @@ AssociationRulesCollection >> gtInspectorAssociationRulesIn: composite [
 		beMultiple;
 		enableElementIndex;
 		wantsAutomaticRefresh: true;
-		column: 'Index' evaluated: [ :rule :idex | idex asString ] width: 50;
+		column: 'Index' evaluated: [ :rule :index | index ] width: 50;
 		column: 'Antecedent' evaluated: [ :rule | rule key asString ];
 		column: '' evaluated: [ :rule | '=>' ] width: 15;
 		column: 'Consequent' evaluated: [ :rule | rule value asString ];
-		column: 'Count' evaluated: [ :rule | rule count asString ] width: 50;
-		column: 'Support' evaluated: [ :rule | rule support asFloat asString ] width: 60;
-		column: 'Confidence' evaluated: [ :rule | rule confidence asFloat asString ] width: 55;
-		column: 'Lift' evaluated: [ :rule | rule lift asFloat asString ] width: 50;
+		column: 'Count' evaluated: [ :rule | rule count ] width: 50;
+		column: 'Support' evaluated: [ :rule | rule support asFloat round: 4 ] width: 75;
+		column: 'Confidence' evaluated: [ :rule | rule confidence asFloat round: 2 ] width: 75;
+		column: 'Lift' evaluated: [ :rule | rule lift asFloat round: 2 ] width: 75;
 		send: [ :result | 
 			"withSmalltalkSearch;
 		showOnly: 50;
@@ -39,4 +33,9 @@ AssociationRulesCollection >> gtInspectorAssociationRulesIn: composite [
 						ifFalse: [ self species withAll: result ]
 					]
 			]
+]
+
+{ #category : #'as yet unclassified' }
+AssociationRulesCollection >> gtInspectorItemsIn: composite [
+	"Hide Items from inspector"
 ]

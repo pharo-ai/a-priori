@@ -38,7 +38,7 @@ APriori >> associationRules [
 	Meanining that customers who purchased a, b, and c, are also likely to purchase d and e."
 	
 	associationRules ifNil: [ self findAssociationRules ].
-	^ encoder decodeRules: associationRules
+	^ AssociationRulesCollection withAll: (encoder decodeRules: associationRules)
 ]
 
 { #category : #'private - counting' }
@@ -191,7 +191,7 @@ APriori >> findFrequentItemsetsOfSizeOne [
 APriori >> frequentItemsets [
 	"Find frequent itemsets (the ones that pass the support threshold) and save the result. If frequent itemsets have already been fond before, we simply return them without performing the same calculations again. This is especially useful when we find frequent itemsets AND association rules. Because to find association rules we need to find frequent itemsets (which is the most time-consuming operation), so we can use the ones that were found before."
 	frequentItemsets ifNil: [ self findFrequentItemsets ].
-	^ encoder decodeItemsets: frequentItemsets
+	^ ItemsetsCollection withAll: (encoder decodeItemsets: frequentItemsets)
 ]
 
 { #category : #initialization }
