@@ -1,5 +1,10 @@
+"
+I am a copy of class ItemsetEncoderTest. This comment is copied from there, and might not be entirely accurate
+
+This class contains tests
+"
 Class {
-	#name : #ItemsetEncoderTest,
+	#name : #APrioriIntegerEncoderTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'transactions',
@@ -9,14 +14,14 @@ Class {
 }
 
 { #category : #running }
-ItemsetEncoderTest >> setUp [ 
+APrioriIntegerEncoderTest >> setUp [ 
 	super setUp.
 	transactions := APrioriMockTransactions new transactions.
-	encoder := ItemsetEncoder basedOn: transactions.
+	encoder := APrioriIntegerEncoder basedOn: transactions.
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeItemset [
+APrioriIntegerEncoderTest >> testDecodeItemset [
 	| itemset expected actual |
 	itemset := #(3 6) asItemset.
 	expected := #(butter bread) asItemset.
@@ -25,7 +30,7 @@ ItemsetEncoderTest >> testDecodeItemset [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeItemsetCountSupport [
+APrioriIntegerEncoderTest >> testDecodeItemsetCountSupport [
 	| itemset decoded |
 	
 	itemset := #(3 6) asItemset
@@ -40,7 +45,7 @@ ItemsetEncoderTest >> testDecodeItemsetCountSupport [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeItemsets [
+APrioriIntegerEncoderTest >> testDecodeItemsets [
 	| itemsets expected actual |
 	itemsets := {
 		#(3 6) asItemset .
@@ -53,7 +58,7 @@ ItemsetEncoderTest >> testDecodeItemsets [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeRule [
+APrioriIntegerEncoderTest >> testDecodeRule [
 	| rule expected actual |
 	rule := #(3) asItemset => #(6) asItemset.
 	expected := #(butter) asItemset => #(bread) asItemset.
@@ -62,7 +67,7 @@ ItemsetEncoderTest >> testDecodeRule [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeRuleCountSupportConfidenceLift [
+APrioriIntegerEncoderTest >> testDecodeRuleCountSupportConfidenceLift [
 	| rule decoded |
 	
 	rule := (#(3) asItemset => #(6) asItemset)
@@ -81,7 +86,7 @@ ItemsetEncoderTest >> testDecodeRuleCountSupportConfidenceLift [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeRuleKeyCountSupport [
+APrioriIntegerEncoderTest >> testDecodeRuleKeyCountSupport [
 	| itemset1 itemset2 rule decoded |
 	
 	itemset1 := #(3) asItemset
@@ -99,7 +104,7 @@ ItemsetEncoderTest >> testDecodeRuleKeyCountSupport [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testDecodeRuleValueCountSupport [
+APrioriIntegerEncoderTest >> testDecodeRuleValueCountSupport [
 	| itemset1 itemset2 rule decoded |
 	
 	itemset1 := #(3) asItemset.
@@ -118,7 +123,7 @@ ItemsetEncoderTest >> testDecodeRuleValueCountSupport [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testEncodeItemset [
+APrioriIntegerEncoderTest >> testEncodeItemset [
 	| itemset expected actual |
 	itemset := #(butter bread) asItemset.
 	expected := #(3 6) asItemset.
@@ -127,7 +132,7 @@ ItemsetEncoderTest >> testEncodeItemset [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testEncodeItemsetCountSupport [
+APrioriIntegerEncoderTest >> testEncodeItemsetCountSupport [
 	| itemset encoded |
 	
 	itemset := #(butter bread) asItemset
@@ -142,7 +147,7 @@ ItemsetEncoderTest >> testEncodeItemsetCountSupport [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testEncodeRule [
+APrioriIntegerEncoderTest >> testEncodeRule [
 	| rule expected actual |
 	rule := #(butter) asItemset => #(bread) asItemset.
 	expected := #(3) asItemset => #(6) asItemset.
@@ -151,7 +156,7 @@ ItemsetEncoderTest >> testEncodeRule [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
+APrioriIntegerEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
 	| rule encoded |
 	
 	rule := (#(butter) asItemset => #(bread) asItemset)
@@ -170,7 +175,7 @@ ItemsetEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testEncodeRuleKeyCountSupport [
+APrioriIntegerEncoderTest >> testEncodeRuleKeyCountSupport [
 	| itemset1 itemset2 rule encoded |
 	
 	itemset1 := #(butter) asItemset
@@ -188,7 +193,7 @@ ItemsetEncoderTest >> testEncodeRuleKeyCountSupport [
 ]
 
 { #category : #tests }
-ItemsetEncoderTest >> testEncodeRuleValueCountSupport [
+APrioriIntegerEncoderTest >> testEncodeRuleValueCountSupport [
 	| itemset1 itemset2 rule encoded |
 	
 	itemset1 := #(butter) asItemset.
