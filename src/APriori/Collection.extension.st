@@ -4,5 +4,5 @@ Extension { #name : #Collection }
 Collection >> asItemset [
 	"Answer an Itemset whose elements are the elements of the receiver."
 
-	^ Itemset withAll: self
+	^ APrioriItemset withAll: self
 ]

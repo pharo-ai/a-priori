@@ -21,8 +21,12 @@ APrioriEncoder >> decodeItem: anObject [
 
 { #category : #converting }
 APrioriEncoder >> decodeItemset: itemset [
-	^ itemset collect: [ :item |
+	| decodedItemset |
+	decodedItemset := itemset collect: [ :item |
 		self decodeItem: item ].
+	
+	decodedItemset algorithm: itemset algorithm.
+	^ decodedItemset
 ]
 
 { #category : #converting }
@@ -34,7 +38,11 @@ APrioriEncoder >> decodeItemsets: aCollectionOfItemsets [
 { #category : #converting }
 APrioriEncoder >> decodeRule: rule [
 	"Decode an association rule by decoding its left and right hand side itemsets"
-	^ (self decodeItemset: rule key) -> (self decodeItemset: rule value).
+	| decodedRule |
+	decodedRule := (self decodeItemset: rule key) => (self decodeItemset: rule value).
+	
+	decodedRule algorithm: rule algorithm.
+	^ decodedRule
 ]
 
 { #category : #converting }
@@ -50,8 +58,12 @@ APrioriEncoder >> encodeItem: anObject [
 
 { #category : #converting }
 APrioriEncoder >> encodeItemset: itemset [
-	^ itemset collect: [ :item |
+	| encodedItemset |
+	encodedItemset := itemset collect: [ :item |
 		self encodeItem: item ].
+	
+	encodedItemset algorithm: itemset algorithm.
+	^ encodedItemset
 ]
 
 { #category : #converting }
@@ -63,7 +75,11 @@ APrioriEncoder >> encodeItemsets: aCollectionOfItemsets [
 { #category : #converting }
 APrioriEncoder >> encodeRule: rule [
 	"Encode an association rule by encoding its left and right hand side itemsets"
-	^ (self encodeItemset: rule key) -> (self encodeItemset: rule value).
+	| encodedRule |
+	encodedRule := (self encodeItemset: rule key) => (self encodeItemset: rule value).
+	
+	encodedRule algorithm: rule algorithm.
+	^ encodedRule
 ]
 
 { #category : #converting }

@@ -13,17 +13,12 @@ Class {
 	#category : #APriori
 }
 
-{ #category : #'instance creation' }
-APriori class >> new [ 
-	self shouldNotImplement 
-]
-
 { #category : #'as yet unclassified' }
 APriori class >> transactions: transactions supportThreshold: aSupportThreshold confidenceThreshold: aConfidenceThreshold [
 	| transactionsAsItemsets |
 	transactionsAsItemsets := transactions collect: #asItemset.
 	
-	^ super new
+	^ self new
 		initializeTransactions: transactionsAsItemsets
 		supportThreshold: aSupportThreshold
 		confidenceThreshold: aConfidenceThreshold

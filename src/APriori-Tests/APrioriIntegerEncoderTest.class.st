@@ -7,7 +7,6 @@ Class {
 	#name : #APrioriIntegerEncoderTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'transactions',
 		'encoder'
 	],
 	#category : #'APriori-Tests'
@@ -15,9 +14,21 @@ Class {
 
 { #category : #running }
 APrioriIntegerEncoderTest >> setUp [ 
+	| transactions |
 	super setUp.
 	transactions := APrioriMockTransactions new transactions.
 	encoder := APrioriIntegerEncoder basedOn: transactions.
+]
+
+{ #category : #tests }
+APrioriIntegerEncoderTest >> testDecodeItem [
+	| item expected actual |
+	item := 6.
+	
+	expected := #bread.
+	actual := encoder decodeItem: item.
+	
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -30,18 +41,18 @@ APrioriIntegerEncoderTest >> testDecodeItemset [
 ]
 
 { #category : #tests }
-APrioriIntegerEncoderTest >> testDecodeItemsetCountSupport [
-	| itemset decoded |
+APrioriIntegerEncoderTest >> testDecodeItemsetAlgorithm [
+	| apriori itemset expected actual |
 	
-	itemset := #(3 6) asItemset
-		count: 10;
-		support: 0.1;
-		yourself.
+	apriori := APriori new.
+	itemset := #(3 6) asItemset.
+	itemset algorithm: apriori.
 	
-	decoded := encoder decodeItemset: itemset.
+	expected := #(butter bread) asItemset.
+	expected algorithm: apriori.
 	
-	self assert: decoded count equals: 10.
-	self assert: decoded support equals: 0.1.
+	actual := encoder decodeItemset: itemset.
+	self assert: (actual =!= expected).
 ]
 
 { #category : #tests }
@@ -67,59 +78,55 @@ APrioriIntegerEncoderTest >> testDecodeRule [
 ]
 
 { #category : #tests }
-APrioriIntegerEncoderTest >> testDecodeRuleCountSupportConfidenceLift [
-	| rule decoded |
+APrioriIntegerEncoderTest >> testDecodeRuleAlgorithm [
+	| apriori itemset1 itemset2 rule expected actual |
 	
-	rule := (#(3) asItemset => #(6) asItemset)
-		count: 10;
-		support: 0.1;
-		confidence: 0.5;
-		lift: 2;
-		yourself.
-	
-	decoded := encoder decodeRule: rule.
-	
-	self assert: decoded count equals: 10.
-	self assert: decoded support equals: 0.1.
-	self assert: decoded confidence equals: 0.5.
-	self assert: decoded lift equals: 2.
-]
-
-{ #category : #tests }
-APrioriIntegerEncoderTest >> testDecodeRuleKeyCountSupport [
-	| itemset1 itemset2 rule decoded |
-	
-	itemset1 := #(3) asItemset
-		count: 10;
-		support: 0.1;
-		yourself.
-		
+	itemset1 := #(3) asItemset.
 	itemset2 := #(6) asItemset.
 	rule := itemset1 => itemset2.
 	
-	decoded := encoder decodeRule: rule.
+	apriori := APriori new.
+	itemset1 algorithm: apriori.
+	itemset2 algorithm: apriori.
+	rule algorithm: apriori.
 	
-	self assert: decoded key count equals: 10.
-	self assert: decoded key support equals: 0.1.
+	itemset1 := #(butter) asItemset.
+	itemset2 := #(bread) asItemset.
+	expected := itemset1 => itemset2.
+	
+	itemset1 algorithm: apriori.
+	itemset2 algorithm: apriori.
+	expected algorithm: apriori.
+	
+	actual := encoder decodeRule: rule.
+	self assert: (actual =!= expected).
 ]
 
 { #category : #tests }
-APrioriIntegerEncoderTest >> testDecodeRuleValueCountSupport [
-	| itemset1 itemset2 rule decoded |
+APrioriIntegerEncoderTest >> testDecodeRules [
+	| rules expected actual |
 	
-	itemset1 := #(3) asItemset.
+	rules := {
+		#(3) asItemset => #(6) asItemset .
+		#(1) asItemset => #(5) asItemset }.
 		
-	itemset2 := #(6) asItemset
-		count: 10;
-		support: 0.1;
-		yourself.
+	expected := {
+		#(butter) asItemset => #(bread) asItemset .
+		#(eggs) asItemset => #(bacon) asItemset }.
 		
-	rule := itemset1 => itemset2.
+	actual := encoder decodeRules: rules.
+	self assert: actual equals: expected.
+]
+
+{ #category : #tests }
+APrioriIntegerEncoderTest >> testEncodeItem [
+	| item expected actual |
+	item := #bread.
 	
-	decoded := encoder decodeRule: rule.
+	expected := 6.
+	actual := encoder encodeItem: item.
 	
-	self assert: decoded value count equals: 10.
-	self assert: decoded value support equals: 0.1.
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -132,18 +139,31 @@ APrioriIntegerEncoderTest >> testEncodeItemset [
 ]
 
 { #category : #tests }
-APrioriIntegerEncoderTest >> testEncodeItemsetCountSupport [
-	| itemset encoded |
+APrioriIntegerEncoderTest >> testEncodeItemsetAlgorithm [
+	| apriori itemset expected actual |
 	
-	itemset := #(butter bread) asItemset
-		count: 10;
-		support: 0.1;
-		yourself.
+	apriori := APriori new.
+	itemset := #(butter bread) asItemset.
+	itemset algorithm: apriori.
 	
-	encoded := encoder encodeItemset: itemset.
+	expected := #(3 6) asItemset.
+	expected algorithm: apriori.
 	
-	self assert: encoded count equals: 10.
-	self assert: encoded support equals: 0.1.
+	actual := encoder encodeItemset: itemset.
+	self assert: (actual =!= expected).
+]
+
+{ #category : #tests }
+APrioriIntegerEncoderTest >> testEncodeItemsets [
+	| itemsets expected actual |
+	itemsets := {
+		#(butter bread) asItemset .
+		#(milk cereal) asItemset }.
+	expected := {
+		#(3 6) asItemset .
+		#(2 4) asItemset }.
+	actual := encoder encodeItemsets: itemsets.
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
@@ -156,57 +176,42 @@ APrioriIntegerEncoderTest >> testEncodeRule [
 ]
 
 { #category : #tests }
-APrioriIntegerEncoderTest >> testEncodeRuleCountSupportConfidenceLift [
-	| rule encoded |
+APrioriIntegerEncoderTest >> testEncodeRuleAlgorithm [
+	| apriori itemset1 itemset2 rule expected actual |
 	
-	rule := (#(butter) asItemset => #(bread) asItemset)
-		count: 10;
-		support: 0.1;
-		confidence: 0.5;
-		lift: 2;
-		yourself.
-	
-	encoded := encoder encodeRule: rule.
-	
-	self assert: encoded count equals: 10.
-	self assert: encoded support equals: 0.1.
-	self assert: encoded confidence equals: 0.5.
-	self assert: encoded lift equals: 2.
-]
-
-{ #category : #tests }
-APrioriIntegerEncoderTest >> testEncodeRuleKeyCountSupport [
-	| itemset1 itemset2 rule encoded |
-	
-	itemset1 := #(butter) asItemset
-		count: 10;
-		support: 0.1;
-		yourself.
-		
+	itemset1 := #(butter) asItemset.
 	itemset2 := #(bread) asItemset.
 	rule := itemset1 => itemset2.
 	
-	encoded := encoder encodeRule: rule.
+	apriori := APriori new.
+	itemset1 algorithm: apriori.
+	itemset2 algorithm: apriori.
+	rule algorithm: apriori.
 	
-	self assert: encoded key count equals: 10.
-	self assert: encoded key support equals: 0.1.
+	itemset1 := #(3) asItemset.
+	itemset2 := #(6) asItemset.
+	expected := itemset1 => itemset2.
+	
+	itemset1 algorithm: apriori.
+	itemset2 algorithm: apriori.
+	expected algorithm: apriori.
+	
+	actual := encoder encodeRule: rule.
+	self assert: (actual =!= expected).
 ]
 
 { #category : #tests }
-APrioriIntegerEncoderTest >> testEncodeRuleValueCountSupport [
-	| itemset1 itemset2 rule encoded |
+APrioriIntegerEncoderTest >> testEncodeRules [
+	| rules expected actual |
 	
-	itemset1 := #(butter) asItemset.
+	rules := {
+		#(butter) asItemset => #(bread) asItemset .
+		#(eggs) asItemset => #(bacon) asItemset }.
 		
-	itemset2 := #(bread) asItemset
-		count: 10;
-		support: 0.1;
-		yourself.
+	expected := {
+		#(3) asItemset => #(6) asItemset .
+		#(1) asItemset => #(5) asItemset }.
 		
-	rule := itemset1 => itemset2.
-	
-	encoded := encoder encodeRule: rule.
-	
-	self assert: encoded value count equals: 10.
-	self assert: encoded value support equals: 0.1.
+	actual := encoder encodeRules: rules.
+	self assert: actual equals: expected.
 ]
