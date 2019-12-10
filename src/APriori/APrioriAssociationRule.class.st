@@ -3,7 +3,8 @@ Class {
 	#superclass : #Association,
 	#type : #variable,
 	#instVars : [
-		'algorithm'
+		'algorithm',
+		'parentItemset'
 	],
 	#category : #APriori
 }
@@ -31,4 +32,24 @@ APrioriAssociationRule >> algorithm [
 { #category : #accessing }
 APrioriAssociationRule >> algorithm: anObject [
 	algorithm := anObject
+]
+
+{ #category : #'as yet unclassified' }
+APrioriAssociationRule >> keyItemset [
+	^ self key
+]
+
+{ #category : #'as yet unclassified' }
+APrioriAssociationRule >> parentItemset [
+	^ parentItemset
+]
+
+{ #category : #'as yet unclassified' }
+APrioriAssociationRule >> parentItemset: anObject [
+	parentItemset := anObject
+]
+
+{ #category : #'as yet unclassified' }
+APrioriAssociationRule >> valueItemset [
+	^ self value
 ]
