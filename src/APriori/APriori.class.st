@@ -19,6 +19,38 @@ APriori class >> forTransactions: aTransactionsDatabase [
 	^ self new initializeTransactions: aTransactionsDatabase 
 ]
 
+{ #category : #'as yet unclassified' }
+APriori >> allAssociationRulesFromItemset: anItemset [
+	"Generate all possible association rules from the given itemset.
+	Example:
+	{1, 2, 3} --> 
+		{1} => {2, 3}
+		{2} => {1, 3}
+		{3} => {1, 2}
+		{1, 2} => {3}
+		{1, 3} => {2}
+		{2, 3} => {1}"
+	
+	| keys values |
+	
+	keys := anItemset allSubsets.
+	values := keys collect: [ :key | anItemset difference: key ].
+	
+	"We need to get counts of those itemsets"
+	keys := keys collect: [ :itemset |
+		frequentItemsets detect: [ :itemsetWithCount |
+			itemset = itemsetWithCount ] ].
+	
+	values := values collect: [ :itemset |
+		frequentItemsets detect: [ :itemsetWithCount |
+			itemset = itemsetWithCount ] ].
+	
+	^ keys with: values collect: [ :key :value |
+		(key => value)
+			parentItemset: anItemset;
+			yourself ]
+]
+
 { #category : #accessing }
 APriori >> associationRules [
 	^ associationRules
@@ -28,7 +60,7 @@ APriori >> associationRules [
 APriori >> buildAssociationRules [
 	"Generate all possible association rules from frequent itemsets"
 	associationRules := frequentItemsets flatCollect: [ :itemset |
-		itemset allAssociationRules ].
+		self allAssociationRulesFromItemset: itemset ].
 ]
 
 { #category : #'as yet unclassified' }
