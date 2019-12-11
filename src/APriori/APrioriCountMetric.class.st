@@ -11,5 +11,5 @@ APrioriCountMetric >> valueForAssociationRule: anAssociationRule [
 
 { #category : #evaluating }
 APrioriCountMetric >> valueForItemset: anItemset [
-	^ algorithm countOfItemset: anItemset
+	^ anItemset count
 ]

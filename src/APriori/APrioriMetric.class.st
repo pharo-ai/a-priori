@@ -2,24 +2,14 @@ Class {
 	#name : #APrioriMetric,
 	#superclass : #Object,
 	#instVars : [
-		'algorithm'
+		'numberOfTransactions'
 	],
 	#category : #APriori
 }
 
-{ #category : #'instance creation' }
-APrioriMetric class >> forAlgorithm: anAlgorithm [
-	^ super new initializeAlgorithm: anAlgorithm.
-]
-
-{ #category : #'instance creation' }
-APrioriMetric class >> new [ 
-	self shouldNotImplement 
-]
-
-{ #category : #initialization }
-APrioriMetric >> initializeAlgorithm: anAlgorithm [
-	algorithm := anAlgorithm
+{ #category : #accessing }
+APrioriMetric >> numberOfTransactions: aNumber [
+	numberOfTransactions := aNumber
 ]
 
 { #category : #evaluating }

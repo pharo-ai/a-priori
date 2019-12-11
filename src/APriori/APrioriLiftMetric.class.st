@@ -8,11 +8,11 @@ Class {
 APrioriLiftMetric >> valueForAssociationRule: anAssociationRule [
 	| parentCount keyCount valueCount |
 	
-	parentCount := algorithm countOfItemset: anAssociationRule parentItemset.
-	keyCount := algorithm countOfItemset: anAssociationRule keyItemset.
-	valueCount := algorithm countOfItemset: anAssociationRule valueItemset.
+	parentCount := anAssociationRule parentItemset count.
+	keyCount := anAssociationRule keyItemset count.
+	valueCount := anAssociationRule valueItemset count.
 	
-	^ parentCount * algorithm numberOfTransactions / (keyCount * valueCount)
+	^ parentCount * numberOfTransactions / (keyCount * valueCount)
 ]
 
 { #category : #evaluating }

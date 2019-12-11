@@ -7,7 +7,9 @@ Class {
 		'itembase',
 		'frequentItemsetSelector',
 		'candidateGenerator',
-		'associationRules'
+		'associationRules',
+		'itemsetMetrics',
+		'associationRuleMetrics'
 	],
 	#category : #APriori
 }
@@ -17,11 +19,36 @@ APriori class >> forTransactions: aTransactionsDatabase [
 	^ self new initializeTransactions: aTransactionsDatabase 
 ]
 
+{ #category : #accessing }
+APriori >> associationRules [
+	^ associationRules
+]
+
 { #category : #'as yet unclassified' }
 APriori >> buildAssociationRules [
 	"Generate all possible association rules from frequent itemsets"
-	associationRules := frequentItemsets keys flatCollect: [ :itemset |
+	associationRules := frequentItemsets flatCollect: [ :itemset |
 		itemset allAssociationRules ].
+]
+
+{ #category : #'as yet unclassified' }
+APriori >> calculateAssociationRuleMetrics: aCollectionOfMetricsClasses [
+
+	associationRuleMetrics := self instantiateMetrics: aCollectionOfMetricsClasses.
+
+	associationRules do: [ :rule |
+		associationRuleMetrics do: [ :metric |
+			rule metrics at: metric class put: (metric valueForAssociationRule: rule) ] ]
+]
+
+{ #category : #'as yet unclassified' }
+APriori >> calculateItemsetMetrics: aCollectionOfMetricsClasses [
+
+	itemsetMetrics := self instantiateMetrics: aCollectionOfMetricsClasses.
+
+	frequentItemsets do: [ :itemset |
+		itemsetMetrics do: [ :metric |
+			itemset metrics at: metric class put: (metric valueForItemset: itemset) ] ]
 ]
 
 { #category : #'lazy counting' }
@@ -35,12 +62,12 @@ APriori >> findFrequentItemsets [
 	| frequentKItemsets candidates |
 	
 	candidates := itembase collect: [ :item | { item } asItemset ].
-	frequentKItemsets := frequentItemsetSelector selectFrequentItemsetsWithCounts: candidates.
+	frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates.
 	
 	[ frequentKItemsets isEmpty ] whileFalse: [
 		frequentItemsets addAll: frequentKItemsets.
-		candidates := candidateGenerator generateCandidatesFrom: frequentKItemsets keys.
-		frequentKItemsets := frequentItemsetSelector selectFrequentItemsetsWithCounts: candidates ].
+		candidates := candidateGenerator generateCandidatesFrom: frequentKItemsets.
+		frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates ].
 ]
 
 { #category : #accessing }
@@ -61,7 +88,15 @@ APriori >> initializeTransactions: aTransactionsDatabase [
 	itembase := aTransactionsDatabase uniqueItems.
 	numberOfTransactions := aTransactionsDatabase size.
 	
-	frequentItemsets := Dictionary new.
+	frequentItemsets := OrderedCollection new.
+]
+
+{ #category : #'as yet unclassified' }
+APriori >> instantiateMetrics: aCollectionOfMetricsClasses [
+	| metrics |
+	metrics := aCollectionOfMetricsClasses collect: [ :aClass | aClass new ].
+	metrics do: [ :metric | metric numberOfTransactions: numberOfTransactions ].
+	^ metrics
 ]
 
 { #category : #accessing }

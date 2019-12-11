@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 APrioriCountMetricTest >> setUp [
 	super setUp.
-	metric := APrioriCountMetric forAlgorithm: apriori.
+	metric := APrioriCountMetric new.
 ]
 
 { #category : #tests }

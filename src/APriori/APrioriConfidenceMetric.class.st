@@ -8,8 +8,8 @@ Class {
 APrioriConfidenceMetric >> valueForAssociationRule: anAssociationRule [
 	| parentCount keyCount |
 	
-	parentCount := algorithm countOfItemset: anAssociationRule parentItemset.
-	keyCount := algorithm countOfItemset: anAssociationRule keyItemset.
+	parentCount := anAssociationRule parentItemset count.
+	keyCount := anAssociationRule keyItemset count.
 	
 	^ parentCount / keyCount
 ]

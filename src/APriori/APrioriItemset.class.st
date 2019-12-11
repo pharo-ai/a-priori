@@ -3,7 +3,7 @@ Class {
 	#superclass : #CTOrderedSet,
 	#type : #variable,
 	#instVars : [
-		'algorithm'
+		'metrics'
 	],
 	#category : #APriori
 }
@@ -14,7 +14,7 @@ APrioriItemset >> =!= anObject [
 	(self = anObject)
 		ifFalse: [ ^ false ].
 		
-	^ self algorithm = anObject algorithm.
+	^ self metrics = anObject metrics.
 ]
 
 { #category : #'as yet unclassified' }
@@ -27,16 +27,6 @@ APrioriItemset >> => anotherItemset [
 	This will produce an association rule {a, b, c} => {d, e}"
 	
 	^ (self -> anotherItemset) asAssociationRule
-]
-
-{ #category : #accessing }
-APrioriItemset >> algorithm [
-	^ algorithm
-]
-
-{ #category : #accessing }
-APrioriItemset >> algorithm: anObject [
-	algorithm := anObject
 ]
 
 { #category : #'as yet unclassified' }
@@ -57,4 +47,30 @@ APrioriItemset >> allAssociationRules [
 	
 	rules collect: [ :rule | rule parentItemset: self ].
 	^ rules
+]
+
+{ #category : #accessing }
+APrioriItemset >> count [ 
+	^ metrics at: APrioriCountMetric
+]
+
+{ #category : #accessing }
+APrioriItemset >> count: aNumber [
+	metrics at: APrioriCountMetric put: aNumber
+]
+
+{ #category : #initialization }
+APrioriItemset >> initialize [
+	super initialize.
+	metrics := Dictionary new.
+]
+
+{ #category : #accessing }
+APrioriItemset >> metrics [ 
+	^ metrics
+]
+
+{ #category : #accessing }
+APrioriItemset >> support [ 
+	^ metrics at: APrioriSupportMetric
 ]

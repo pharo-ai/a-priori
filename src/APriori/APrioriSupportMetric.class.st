@@ -11,5 +11,5 @@ APrioriSupportMetric >> valueForAssociationRule: anAssociationRule [
 
 { #category : #evaluating }
 APrioriSupportMetric >> valueForItemset: anItemset [
-	^ (algorithm countOfItemset: anItemset) /  algorithm numberOfTransactions
+	^ anItemset count / numberOfTransactions
 ]

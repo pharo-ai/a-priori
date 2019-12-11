@@ -2,7 +2,6 @@ Class {
 	#name : #APrioriMetricTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'apriori',
 		'itemsets',
 		'rules'
 	],
@@ -14,23 +13,23 @@ APrioriMetricTest >> setUp [
 	| counts |
 	super setUp.
 	
-	itemsets := #((eggs)(milk)(butter)(bacon)(bread)(eggs bacon)(butter bread))
-		collect: #asItemset.
-		
+	itemsets := #((eggs)(milk)(butter)(bacon)(bread)(eggs bacon)(butter bread)).
 	counts := #(3 2 3 2 3 2 2).
+		
+	itemsets := itemsets with: counts collect: [ :itemset :count |
+		itemset
+			asItemset
+			count: count;
+			yourself ].
 	
 	rules := { 
-		#(eggs) asItemset => #(bacon) asItemset .
-		#(bacon) asItemset => #(eggs) asItemset .
-		#(butter) asItemset => #(bread) asItemset .
-		#(bread) asItemset => #(butter) asItemset }.
+		itemsets first => itemsets fourth .
+		itemsets fourth => itemsets first .
+		itemsets third => itemsets fifth .
+		itemsets fifth => itemsets third }.
 		
-	rules first parentItemset: #(eggs bacon) asItemset.
-	rules second parentItemset: #(eggs bacon) asItemset.
-	rules third parentItemset: #(butter bread) asItemset.
-	rules fourth parentItemset: #(butter bread) asItemset.
-	
-	apriori := APriori new.
-	apriori numberOfTransactions: 6.
-	apriori frequentItemsets: (Dictionary newFromKeys: itemsets andValues: counts).
+	rules first parentItemset: itemsets sixth.
+	rules second parentItemset: itemsets sixth.
+	rules third parentItemset: itemsets seventh.
+	rules fourth parentItemset: itemsets seventh.
 ]

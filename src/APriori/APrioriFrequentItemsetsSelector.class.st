@@ -29,16 +29,9 @@ APrioriFrequentItemsetsSelector >> minCount: aNumber [
 ]
 
 { #category : #'as yet unclassified' }
-APrioriFrequentItemsetsSelector >> selectFrequentItemsetsWithCounts: aCollectionOfCandidates [
-	| itemsetsWithCounts count |
-	
-	itemsetsWithCounts := Dictionary new.
-	
-	aCollectionOfCandidates do: [ :itemset |
-		count := itemsetCounter countOfItemset: itemset.
-		
-		count >= minCount ifTrue: [ 
-			itemsetsWithCounts at: itemset put: count ] ].
-	
-	^ itemsetsWithCounts
+APrioriFrequentItemsetsSelector >> selectFrequentItemsets: aCollectionOfCandidates [
+
+	^ aCollectionOfCandidates select: [ :itemset |
+		itemset count: (itemsetCounter countOfItemset: itemset).
+		itemset count >= minCount ]
 ]

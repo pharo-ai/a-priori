@@ -10,7 +10,7 @@ Class {
 { #category : #running }
 APrioriConfidenceMetricTest >> setUp [ 
 	super setUp.
-	metric := APrioriConfidenceMetric forAlgorithm: apriori.
+	metric := APrioriConfidenceMetric new.
 ]
 
 { #category : #tests }

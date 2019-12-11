@@ -10,7 +10,8 @@ Class {
 { #category : #running }
 APrioriSupportMetricTest >> setUp [
 	super setUp.
-	metric := APrioriSupportMetric forAlgorithm: apriori.
+	metric := APrioriSupportMetric new.
+	metric numberOfTransactions: 6.
 ]
 
 { #category : #tests }
