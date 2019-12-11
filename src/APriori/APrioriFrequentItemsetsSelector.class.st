@@ -8,17 +8,37 @@ Class {
 	#category : #APriori
 }
 
+{ #category : #'as yet unclassified' }
+APrioriFrequentItemsetsSelector class >> forTransactions: aTransactionsDatabase [ 
+	^ self new initializeTransactions: aTransactionsDatabase 
+]
+
 { #category : #initialization }
-APrioriFrequentItemsetsSelector >> initializeTransactions: aTransactionsDatabase minCount: aMinCountThreshold [
+APrioriFrequentItemsetsSelector >> initializeTransactions: aTransactionsDatabase [
 	itemsetCounter := APrioriItemsetCounter forTransactions: aTransactionsDatabase.
-	minCount := aMinCountThreshold.
+]
+
+{ #category : #accessing }
+APrioriFrequentItemsetsSelector >> minCount [
+	^ minCount
+]
+
+{ #category : #accessing }
+APrioriFrequentItemsetsSelector >> minCount: aNumber [
+	minCount := aNumber
 ]
 
 { #category : #'as yet unclassified' }
-APrioriFrequentItemsetsSelector >> selectFrequentItemsets: aCollectionOfCandidates [
-	| count |
+APrioriFrequentItemsetsSelector >> selectFrequentItemsetsWithCounts: aCollectionOfCandidates [
+	| itemsetsWithCounts count |
 	
-	^ aCollectionOfCandidates select: [ :itemset |
+	itemsetsWithCounts := Dictionary new.
+	
+	aCollectionOfCandidates do: [ :itemset |
 		count := itemsetCounter countOfItemset: itemset.
-		count >= minCount ].
+		
+		count >= minCount ifTrue: [ 
+			itemsetsWithCounts at: itemset put: count ] ].
+	
+	^ itemsetsWithCounts
 ]

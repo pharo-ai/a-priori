@@ -3,7 +3,6 @@ Class {
 	#superclass : #Association,
 	#type : #variable,
 	#instVars : [
-		'algorithm',
 		'parentItemset'
 	],
 	#category : #APriori
@@ -26,12 +25,7 @@ APrioriAssociationRule >> =!= anObject [
 
 { #category : #accessing }
 APrioriAssociationRule >> algorithm [
-	^ algorithm
-]
-
-{ #category : #accessing }
-APrioriAssociationRule >> algorithm: anObject [
-	algorithm := anObject
+	^ parentItemset algorithm
 ]
 
 { #category : #'as yet unclassified' }

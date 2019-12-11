@@ -38,3 +38,23 @@ APrioriItemset >> algorithm [
 APrioriItemset >> algorithm: anObject [
 	algorithm := anObject
 ]
+
+{ #category : #'as yet unclassified' }
+APrioriItemset >> allAssociationRules [ 
+	"Generate all possible association rules from this itemset.
+	Example:
+	{1, 2, 3} --> 
+		{1} => {2, 3}
+		{2} => {1, 3}
+		{3} => {1, 2}
+		{1, 2} => {3}
+		{1, 3} => {2}
+		{2, 3} => {1}"
+	
+	| rules |
+	rules := self allSubsets collect: [ :eachSubset |
+		eachSubset => (self difference: eachSubset) ].
+	
+	rules collect: [ :rule | rule parentItemset: self ].
+	^ rules
+]

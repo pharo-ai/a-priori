@@ -21,3 +21,13 @@ APrioriTransactionsArray >> do: aBlock [
 APrioriTransactionsArray >> initializeArray: anArray [
 	array := anArray
 ]
+
+{ #category : #'as yet unclassified' }
+APrioriTransactionsArray >> size [ 
+	^ array size
+]
+
+{ #category : #'as yet unclassified' }
+APrioriTransactionsArray >> uniqueItems [
+	^ (array flatCollect: #yourself) asSet
+]
