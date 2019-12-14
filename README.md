@@ -32,32 +32,55 @@ transactions := #(
   (bread butter)
   (bread bacon eggs)
   (bread avocado butter bananas)).
+  
+transactionsSource := APrioriTransactionsArray from: transactions.
 ```
 
-Initialize an APriori algorithm with a support and confidence thresholds:
+Initialize an APriori algorithm with transactions:
 
 ```Smalltalk
-apriori := APriori
-  transactions: transactions
-  supportThreshold: 1/3
-  confidenceThreshold: 1/3.
+apriori := APriori forTransactions: transactionsSource.
+```
+
+Specify the support threshold:
+
+```Smalltalk
+apriori minSupport: 1/3.
+```
+
+Alternatively, you could specify a minimum count threshold:
+
+```Smalltalk
+apriori minCount: 2.
 ```
 
 Now you can find frequent itemsets - sets of items that are likely to be purchased together:
 
 ```Smalltalk
-itemsets := apriori frequentItemsets.
-
-" anArray(
-  {bread, butter}
-  {eggs, bacon}
-)"
+apriori findFrequentItemsets.
 ```
 
-Or generate association rules in the form `key => value` where a set of items `value` will be recommended to a customer who purchases a set of items `key`:
+The result will be stored in the frequentItemsets instance variable of apriori:
 
 ```Smalltalk
-rules := apriori associationRules.
+apriori frequentItemsets.
+
+anArray(
+  {bread, butter}
+  {eggs, bacon}
+)
+```
+
+You can generate association rules from those frequent itemsets in the form `key => value` where a set of items `value` will be recommended to a customer who purchases a set of items `key`:
+
+```Smalltalk
+apriori buildAssociationRules.
+```
+
+The result will be stored in the associationRules instance variable of apriori:
+
+```Smalltalk
+apriori associationRules.
 
 " anArray(
   {bread} => {butter}
