@@ -52,6 +52,11 @@ APriori >> allAssociationRulesFromItemset: anItemset [
 ]
 
 { #category : #accessing }
+APriori >> associationRuleMetrics [
+	^ associationRuleMetrics 
+]
+
+{ #category : #accessing }
 APriori >> associationRules [
 	^ associationRules
 ]
@@ -129,6 +134,11 @@ APriori >> instantiateMetrics: aCollectionOfMetricsClasses [
 	metrics := aCollectionOfMetricsClasses collect: [ :aClass | aClass new ].
 	metrics do: [ :metric | metric numberOfTransactions: numberOfTransactions ].
 	^ metrics
+]
+
+{ #category : #accessing }
+APriori >> itemsetMetrics [
+	^ itemsetMetrics
 ]
 
 { #category : #accessing }

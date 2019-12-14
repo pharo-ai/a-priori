@@ -71,6 +71,13 @@ APrioriAssociationRule >> parentItemset: anObject [
 	parentItemset := anObject
 ]
 
+{ #category : #printing }
+APrioriAssociationRule >> printOn: aStream [
+	self key printOn: aStream.
+	aStream nextPutAll: ' => '.
+	self value printOn: aStream.
+]
+
 { #category : #accessing }
 APrioriAssociationRule >> support [
 	^ metrics at: APrioriSupportMetric

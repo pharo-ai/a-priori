@@ -50,6 +50,14 @@ APrioriItemset >> metrics [
 	^ metrics
 ]
 
+{ #category : #printing }
+APrioriItemset >> printOn: aStream [
+	aStream
+		nextPut: ${;
+		nextPutAll: (', ' join: self);
+		nextPut: $}.
+]
+
 { #category : #accessing }
 APrioriItemset >> support [ 
 	^ metrics at: APrioriSupportMetric
