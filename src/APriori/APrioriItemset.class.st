@@ -3,7 +3,7 @@ Class {
 	#superclass : #CTOrderedSet,
 	#type : #variable,
 	#instVars : [
-		'metrics'
+		'metricsValues'
 	],
 	#category : #APriori
 }
@@ -14,7 +14,7 @@ APrioriItemset >> =!= anObject [
 	(self = anObject)
 		ifFalse: [ ^ false ].
 		
-	^ self metrics = anObject metrics.
+	^ self metricsValues = anObject metrics.
 ]
 
 { #category : #'as yet unclassified' }
@@ -31,23 +31,23 @@ APrioriItemset >> => anotherItemset [
 
 { #category : #accessing }
 APrioriItemset >> count [ 
-	^ metrics at: APrioriCountMetric
+	^ metricsValues at: APrioriCountMetric
 ]
 
 { #category : #accessing }
 APrioriItemset >> count: aNumber [
-	metrics at: APrioriCountMetric put: aNumber
+	metricsValues at: APrioriCountMetric put: aNumber
 ]
 
 { #category : #initialization }
 APrioriItemset >> initialize [
 	super initialize.
-	metrics := Dictionary new.
+	metricsValues := Dictionary new.
 ]
 
 { #category : #accessing }
-APrioriItemset >> metrics [ 
-	^ metrics
+APrioriItemset >> metricsValues [ 
+	^ metricsValues
 ]
 
 { #category : #printing }
@@ -60,5 +60,5 @@ APrioriItemset >> printOn: aStream [
 
 { #category : #accessing }
 APrioriItemset >> support [ 
-	^ metrics at: APrioriSupportMetric
+	^ metricsValues at: APrioriSupportMetric
 ]

@@ -17,7 +17,6 @@ APrioriCandidateGenerator >> canItemset: firstItemset beJoinedWith: secondItemse
 
 { #category : #'as yet unclassified' }
 APrioriCandidateGenerator >> generateCandidatesFrom: previousFrequentItemsets [
-	"Join step of candidate generation"
 	| candidateItemsets |
 	candidateItemsets := self joinItemsets: previousFrequentItemsets.
 	candidateItemsets := self pruneItemsets: candidateItemsets basedOn: previousFrequentItemsets.
@@ -44,7 +43,6 @@ APrioriCandidateGenerator >> joinItemsets: itemsets [
 
 { #category : #'as yet unclassified' }
 APrioriCandidateGenerator >> pruneItemsets: itemsets basedOn: previousFrequentItemsets [
-	"Prune step of candidate generation"
 	^ itemsets select: [ :itemset |
 		itemset allLargestSubsets allSatisfy: [ :subset |
 			previousFrequentItemsets includes: subset ] ].

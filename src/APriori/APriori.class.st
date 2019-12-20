@@ -4,12 +4,12 @@ Class {
 	#instVars : [
 		'frequentItemsets',
 		'numberOfTransactions',
-		'itembase',
 		'frequentItemsetSelector',
 		'candidateGenerator',
 		'associationRules',
 		'itemsetMetrics',
-		'associationRuleMetrics'
+		'associationRuleMetrics',
+		'itembase'
 	],
 	#category : #APriori
 }
@@ -88,11 +88,6 @@ APriori >> calculateItemsetMetrics: aCollectionOfMetricsClasses [
 			itemset metrics at: metric class put: (metric valueForItemset: itemset) ] ]
 ]
 
-{ #category : #'lazy counting' }
-APriori >> countOfItemset: anItemset [
-	^ frequentItemsets at: anItemset
-]
-
 { #category : #'as yet unclassified' }
 APriori >> findFrequentItemsets [ 
 	"Find all frequent itemsets - all itemsets that pass the support threshold, meaning that they appear in transactions at least a given number of times. We start by finding frequent itemsets of size 1, then we use them to fing frequent itemsets of size 2, then 3, 4, and so on until we get an empty set."
@@ -118,12 +113,12 @@ APriori >> frequentItemsets: anObject [
 ]
 
 { #category : #initialization }
-APriori >> initializeTransactions: aTransactionsDatabase [
+APriori >> initializeTransactions: transactions [
 	candidateGenerator := APrioriCandidateGenerator new.
-	frequentItemsetSelector := APrioriFrequentItemsetsSelector forTransactions: aTransactionsDatabase.
+	frequentItemsetSelector := APrioriFrequentItemsetsSelector forTransactions: transactions.
 	
-	itembase := aTransactionsDatabase uniqueItems.
-	numberOfTransactions := aTransactionsDatabase size.
+	itembase := transactions itembase. 
+	numberOfTransactions := transactions size.
 	
 	frequentItemsets := OrderedCollection new.
 ]

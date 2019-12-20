@@ -4,7 +4,7 @@ Class {
 	#type : #variable,
 	#instVars : [
 		'parentItemset',
-		'metrics'
+		'metricsValues'
 	],
 	#category : #APriori
 }
@@ -32,18 +32,18 @@ APrioriAssociationRule >> =!= anObject [
 
 { #category : #accessing }
 APrioriAssociationRule >> confidence [
-	^ metrics at: APrioriConfidenceMetric
+	^ metricsValues at: APrioriConfidenceMetric
 ]
 
 { #category : #accessing }
 APrioriAssociationRule >> count [
-	^ metrics at: APrioriCountMetric
+	^ metricsValues at: APrioriCountMetric
 ]
 
 { #category : #initialization }
 APrioriAssociationRule >> initialize [ 
 	super initialize.
-	metrics := Dictionary new.
+	metricsValues := Dictionary new.
 ]
 
 { #category : #'as yet unclassified' }
@@ -53,12 +53,12 @@ APrioriAssociationRule >> keyItemset [
 
 { #category : #accessing }
 APrioriAssociationRule >> lift [
-	^ metrics at: APrioriLiftMetric
+	^ metricsValues at: APrioriLiftMetric
 ]
 
 { #category : #accessing }
-APrioriAssociationRule >> metrics [ 	
-	^ metrics
+APrioriAssociationRule >> metricsValues [	
+	^ metricsValues
 ]
 
 { #category : #'as yet unclassified' }
@@ -80,7 +80,7 @@ APrioriAssociationRule >> printOn: aStream [
 
 { #category : #accessing }
 APrioriAssociationRule >> support [
-	^ metrics at: APrioriSupportMetric
+	^ metricsValues at: APrioriSupportMetric
 ]
 
 { #category : #'as yet unclassified' }
