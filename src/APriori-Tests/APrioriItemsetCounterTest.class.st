@@ -9,12 +9,11 @@ Class {
 
 { #category : #running }
 APrioriItemsetCounterTest >> setUp [
-	| transactions transactionsDatabase | 
+	| arrayOfTransactions transactions | 
 	super setUp.
-	
-	transactions := APrioriMockTransactions new transactions.
-	transactionsDatabase := APrioriTransactionsArray from: transactions.
-	counter := APrioriItemsetCounter forTransactions: transactionsDatabase.
+	arrayOfTransactions := APrioriMockTransactions new transactions.
+	transactions := APrioriTransactionsArray from: arrayOfTransactions.
+	counter := APrioriItemsetCounter forTransactions: transactions.
 ]
 
 { #category : #tests }

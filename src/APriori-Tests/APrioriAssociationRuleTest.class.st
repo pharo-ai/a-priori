@@ -386,7 +386,7 @@ APrioriAssociationRuleTest >> testStrongEqualitySameElementsDifferentMetrics [
 	rule2 metricsValues at: APrioriConfidenceMetric put: 0.
 	rule2 metricsValues at: APrioriLiftMetric put: 0.
 	
-	self assert: (rule1 =!= rule2).
+	self deny: (rule1 =!= rule2).
 ]
 
 { #category : #tests }
