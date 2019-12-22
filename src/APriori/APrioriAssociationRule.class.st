@@ -27,7 +27,7 @@ APrioriAssociationRule >> =!= anObject [
 	(self value =!= anObject value)
 		ifFalse: [ ^ false ].
 		
-	^ self metrics = anObject metrics.
+	^ self metricsValues = anObject metricsValues.
 ]
 
 { #category : #accessing }
