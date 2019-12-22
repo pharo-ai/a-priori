@@ -14,7 +14,7 @@ APrioriItemset >> =!= anObject [
 	(self = anObject)
 		ifFalse: [ ^ false ].
 		
-	^ self metricsValues = anObject metrics.
+	^ self metricsValues = anObject metricsValues.
 ]
 
 { #category : #'as yet unclassified' }
