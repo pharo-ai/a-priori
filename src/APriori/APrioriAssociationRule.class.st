@@ -17,14 +17,17 @@ APrioriAssociationRule class >> key: aKey value: aValue [
 
 { #category : #'as yet unclassified' }
 APrioriAssociationRule >> =!= anObject [
-	"Strong equality - checks not only the equality of the items inside key and value collections, but also the equality of algorithm of the rule, of key, and of value"
+	"Strong equality - checks not only the equality of the items inside key and value collections, but also the equality of metrics of the rule, of key, and of value, as well as the strong equality of the parent itemset"
 	(self species = anObject species)
 		ifFalse: [ ^ false ].
 		
-	(self key =!= anObject key)
+	(self keyItemset =!= anObject keyItemset)
 		ifFalse: [ ^ false ].
 		
-	(self value =!= anObject value)
+	(self valueItemset =!= anObject valueItemset)
+		ifFalse: [ ^ false ].
+		
+	(self parentItemset =!= anObject parentItemset)
 		ifFalse: [ ^ false ].
 		
 	^ self metricsValues = anObject metricsValues.

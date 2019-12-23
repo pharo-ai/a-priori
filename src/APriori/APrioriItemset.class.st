@@ -10,7 +10,7 @@ Class {
 
 { #category : #'as yet unclassified' }
 APrioriItemset >> =!= anObject [
-	"Equality operation that checks not only the equality of items, but also the equality of algorithm"
+	"Equality operation that checks not only the equality of items, but also the equality of metricsValues"
 	(self = anObject)
 		ifFalse: [ ^ false ].
 		

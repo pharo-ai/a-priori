@@ -243,6 +243,91 @@ APrioriAssociationRuleTest >> testEqualitySameElementsSameMetrics [
 ]
 
 { #category : #tests }
+APrioriAssociationRuleTest >> testEqualitySameElementsSameMetricsDifferentParentMetrics [
+	| keyItemset1 valueItemset1 keyItemset2 valueItemset2 parentItemset1 parentItemset2 rule1 rule2 |
+	
+	keyItemset1 := #(a c b) asItemset.
+	keyItemset1 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset1 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset1 := #(f d) asItemset.
+	valueItemset1 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset1 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	keyItemset2 := #(a c b) asItemset.
+	keyItemset2 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset2 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset2 := #(f d) asItemset.
+	valueItemset2 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset2 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	parentItemset1 := #(a c b f d) asItemset.
+	parentItemset1 metricsValues at: APrioriCountMetric put: 13.
+	parentItemset1 metricsValues at: APrioriSupportMetric put: 0.45.
+	
+	parentItemset2 := #(a c b f d) asItemset.
+	parentItemset2 metricsValues at: APrioriCountMetric put: 13.
+	parentItemset2 metricsValues at: APrioriSupportMetric put: 0.78.
+	
+	rule1 := keyItemset1 => valueItemset1.
+	rule1 parentItemset: parentItemset1.
+	rule1 metricsValues at: APrioriCountMetric put: 30.
+	rule1 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule1 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule1 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	rule2 := keyItemset2 => valueItemset2.
+	rule2 parentItemset: parentItemset2.
+	rule2 metricsValues at: APrioriCountMetric put: 30.
+	rule2 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule2 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule2 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	self assert: rule1 equals: rule2.
+]
+
+{ #category : #tests }
+APrioriAssociationRuleTest >> testEqualitySameElementsSameMetricsDifferentParents [
+	| keyItemset1 valueItemset1 keyItemset2 valueItemset2 parentItemset1 parentItemset2 rule1 rule2 |
+	
+	keyItemset1 := #(a c b) asItemset.
+	keyItemset1 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset1 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset1 := #(f d) asItemset.
+	valueItemset1 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset1 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	keyItemset2 := #(a c b) asItemset.
+	keyItemset2 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset2 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset2 := #(f d) asItemset.
+	valueItemset2 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset2 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	parentItemset1 := #(a c b f d) asItemset.
+	parentItemset2 := #(f d a c b) asItemset.
+	
+	rule1 := keyItemset1 => valueItemset1.
+	rule1 parentItemset: parentItemset1.
+	rule1 metricsValues at: APrioriCountMetric put: 30.
+	rule1 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule1 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule1 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	rule2 := keyItemset2 => valueItemset2.
+	rule2 parentItemset: parentItemset2.
+	rule2 metricsValues at: APrioriCountMetric put: 30.
+	rule2 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule2 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule2 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	self assert: rule1 equals: rule2.
+]
+
+{ #category : #tests }
 APrioriAssociationRuleTest >> testKeyItemset [
 	| keyItemset valueItemset rule |
 	
@@ -492,6 +577,91 @@ APrioriAssociationRuleTest >> testStrongEqualitySameElementsSameMetrics [
 	rule2 metricsValues at: APrioriLiftMetric put: 0.9.
 	
 	self assert: (rule1 =!= rule2).
+]
+
+{ #category : #tests }
+APrioriAssociationRuleTest >> testStrongEqualitySameElementsSameMetricsDifferentParentMetrics [
+	| keyItemset1 valueItemset1 keyItemset2 valueItemset2 parentItemset1 parentItemset2 rule1 rule2 |
+	
+	keyItemset1 := #(a c b) asItemset.
+	keyItemset1 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset1 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset1 := #(f d) asItemset.
+	valueItemset1 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset1 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	keyItemset2 := #(a c b) asItemset.
+	keyItemset2 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset2 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset2 := #(f d) asItemset.
+	valueItemset2 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset2 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	parentItemset1 := #(a c b f d) asItemset.
+	parentItemset1 metricsValues at: APrioriCountMetric put: 13.
+	parentItemset1 metricsValues at: APrioriSupportMetric put: 0.45.
+	
+	parentItemset2 := #(a c b f d) asItemset.
+	parentItemset2 metricsValues at: APrioriCountMetric put: 13.
+	parentItemset2 metricsValues at: APrioriSupportMetric put: 0.78.
+	
+	rule1 := keyItemset1 => valueItemset1.
+	rule1 parentItemset: parentItemset1.
+	rule1 metricsValues at: APrioriCountMetric put: 30.
+	rule1 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule1 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule1 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	rule2 := keyItemset2 => valueItemset2.
+	rule2 parentItemset: parentItemset2.
+	rule2 metricsValues at: APrioriCountMetric put: 30.
+	rule2 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule2 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule2 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	self deny: (rule1 =!= rule2).
+]
+
+{ #category : #tests }
+APrioriAssociationRuleTest >> testStrongEqualitySameElementsSameMetricsDifferentParents [
+	| keyItemset1 valueItemset1 keyItemset2 valueItemset2 parentItemset1 parentItemset2 rule1 rule2 |
+	
+	keyItemset1 := #(a c b) asItemset.
+	keyItemset1 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset1 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset1 := #(f d) asItemset.
+	valueItemset1 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset1 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	keyItemset2 := #(a c b) asItemset.
+	keyItemset2 metricsValues at: APrioriCountMetric put: 10.
+	keyItemset2 metricsValues at: APrioriSupportMetric put: 0.5.
+	
+	valueItemset2 := #(f d) asItemset.
+	valueItemset2 metricsValues at: APrioriCountMetric put: 20.
+	valueItemset2 metricsValues at: APrioriSupportMetric put: 0.7.
+	
+	parentItemset1 := #(a c b f d) asItemset.
+	parentItemset2 := #(f d a c b) asItemset.
+	
+	rule1 := keyItemset1 => valueItemset1.
+	rule1 parentItemset: parentItemset1.
+	rule1 metricsValues at: APrioriCountMetric put: 30.
+	rule1 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule1 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule1 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	rule2 := keyItemset2 => valueItemset2.
+	rule2 parentItemset: parentItemset2.
+	rule2 metricsValues at: APrioriCountMetric put: 30.
+	rule2 metricsValues at: APrioriSupportMetric put: 0.4.
+	rule2 metricsValues at: APrioriConfidenceMetric put: 0.7.
+	rule2 metricsValues at: APrioriLiftMetric put: 0.9.
+	
+	self deny: (rule1 =!= rule2).
 ]
 
 { #category : #tests }
