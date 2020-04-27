@@ -85,7 +85,7 @@ APriori >> calculateItemsetMetrics: aCollectionOfMetricsClasses [
 
 	frequentItemsets do: [ :itemset |
 		itemsetMetrics do: [ :metric |
-			itemset metrics at: metric class put: (metric valueForItemset: itemset) ] ]
+			itemset metricsValues at: metric class put: (metric valueForItemset: itemset) ] ]
 ]
 
 { #category : #'as yet unclassified' }
