@@ -121,6 +121,9 @@ APriori >> initializeTransactions: transactions [
 	numberOfTransactions := transactions size.
 	
 	frequentItemsets := OrderedCollection new.
+	associationRules := OrderedCollection new.
+	itemsetMetrics := OrderedCollection new.
+	associationRuleMetrics := OrderedCollection new.
 ]
 
 { #category : #'as yet unclassified' }
