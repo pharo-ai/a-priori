@@ -45,20 +45,36 @@ APrioriTest >> testBuildAssociationRules [
 
 { #category : #tests }
 APrioriTest >> testCalculateAssociationRuleMetrics [
-	apriori calculateAssociationRuleMetrics: { APrioriConfidenceMetric . APrioriLiftMetric }.
+	apriori findFrequentItemsets.
+	apriori buildAssociationRules.
+	apriori calculateAssociationRuleMetrics: { APrioriCountMetric . APrioriSupportMetric . APrioriConfidenceMetric . APrioriLiftMetric }.
 	
-	self assert: apriori associationRuleMetrics size equals: 2.
-	self assert: apriori associationRuleMetrics first class equals: APrioriConfidenceMetric.
-	self assert: apriori associationRuleMetrics second class equals: APrioriLiftMetric.
+	self assert: apriori associationRuleMetrics size equals: 4.
+	self assert: apriori associationRuleMetrics first class equals: APrioriCountMetric.
+	self assert: apriori associationRuleMetrics second class equals: APrioriSupportMetric.
+	self assert: apriori associationRuleMetrics third class equals: APrioriConfidenceMetric.
+	self assert: apriori associationRuleMetrics fourth class equals: APrioriLiftMetric.
 ]
 
 { #category : #tests }
 APrioriTest >> testCalculateItemsetMetrics [
+	apriori minCount: 2.
+	apriori findFrequentItemsets.
 	apriori calculateItemsetMetrics: { APrioriCountMetric . APrioriSupportMetric }.
 	
 	self assert: apriori itemsetMetrics size equals: 2.
 	self assert: apriori itemsetMetrics first class equals: APrioriCountMetric.
 	self assert: apriori itemsetMetrics second class equals: APrioriSupportMetric.
+	
+	self assert: (apriori frequentItemsets collect: [ :each | each -> each count ]) asDictionary equals: {
+		#(eggs) asItemset -> 3 .
+		#(milk) asItemset -> 2 .
+		#(butter) asItemset -> 3 .
+		#(bacon) asItemset -> 2 .
+		#(bread) asItemset -> 3 .
+		#(bacon eggs) asItemset -> 2 .
+		#(bread butter) asItemset -> 2
+	} asDictionary.
 ]
 
 { #category : #tests }
@@ -74,6 +90,8 @@ APrioriTest >> testFindFrequentItemsets [
 		#(milk) asItemset .
 		#(bread butter) asItemset .
 		#(bacon eggs) asItemset } asOrderedCollection.
+		
+	self assert: (apriori frequentItemsets collect: [ :each | each count ]) equals: #(3 2 3 3 2 2 2) asOrderedCollection. 
 ]
 
 { #category : #tests }

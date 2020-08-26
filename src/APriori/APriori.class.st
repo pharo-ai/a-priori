@@ -98,8 +98,9 @@ APriori >> findFrequentItemsets [
 	
 	[ frequentKItemsets isEmpty ] whileFalse: [
 		frequentItemsets addAll: frequentKItemsets.
-		candidates := candidateGenerator generateCandidatesFrom: frequentKItemsets.
-		frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates ].
+		"NOTE: deepCopy here is the hack to fix failing tests"
+		candidates := candidateGenerator generateCandidatesFrom: frequentKItemsets deepCopy.
+		frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates deepCopy ].
 ]
 
 { #category : #accessing }

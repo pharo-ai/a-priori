@@ -14,7 +14,7 @@ APrioriItemsetCounter class >> forTransactions: aTransactionsDatabase [
 
 { #category : #'lazy counting' }
 APrioriItemsetCounter >> countOfItemset: anItemset [
-	| count |
+	| count x |
 	count := 0.
 	
 	transactions do: [ :transaction |
