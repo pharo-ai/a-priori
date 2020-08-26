@@ -75,7 +75,7 @@ APriori >> calculateAssociationRuleMetrics: aCollectionOfMetricsClasses [
 
 	associationRules do: [ :rule |
 		associationRuleMetrics do: [ :metric |
-			rule metrics at: metric class put: (metric valueForAssociationRule: rule) ] ]
+			rule metricsValues at: metric class put: (metric valueForAssociationRule: rule) ] ]
 ]
 
 { #category : #'as yet unclassified' }
