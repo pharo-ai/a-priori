@@ -31,6 +31,19 @@ APrioriTest >> testAssociationRules [
 ]
 
 { #category : #tests }
+APrioriTest >> testBuildAssociationRules [
+	apriori minCount: 2.
+	apriori findFrequentItemsets.
+	apriori buildAssociationRules.
+	
+	self assert: apriori associationRules equals: {
+		#(bread) asItemset => #(butter) asItemset .
+		#(butter) asItemset => #(bread) asItemset .
+		#(bacon) asItemset => #(eggs) asItemset .
+		#(eggs) asItemset => #(bacon) asItemset } asOrderedCollection.
+]
+
+{ #category : #tests }
 APrioriTest >> testCalculateAssociationRuleMetrics [
 	apriori calculateAssociationRuleMetrics: { APrioriConfidenceMetric . APrioriLiftMetric }.
 	
@@ -49,6 +62,21 @@ APrioriTest >> testCalculateItemsetMetrics [
 ]
 
 { #category : #tests }
+APrioriTest >> testFindFrequentItemsets [
+	apriori minCount: 2.
+	apriori findFrequentItemsets.
+	
+	self assert: apriori frequentItemsets equals: {
+		#(butter) asItemset .
+		#(bacon) asItemset .
+		#(eggs) asItemset .
+		#(bread) asItemset .
+		#(milk) asItemset .
+		#(bread butter) asItemset .
+		#(bacon eggs) asItemset } asOrderedCollection.
+]
+
+{ #category : #tests }
 APrioriTest >> testFrequentItemsets [
 	self assert: apriori frequentItemsets equals: OrderedCollection new.
 ]
@@ -64,6 +92,22 @@ APrioriTest >> testItemsetMetricsEmpty [
 ]
 
 { #category : #tests }
+APrioriTest >> testMinCount [
+	self assert: apriori minCount equals: 1.
+	
+	apriori minCount: 42.
+	self assert: apriori minCount equals: 42.
+]
+
+{ #category : #tests }
+APrioriTest >> testMinSupport [
+	self assert: apriori minSupport closeTo: 1 / transactions size.
+	
+	apriori minSupport: 0.1.
+	self assert: apriori minSupport closeTo: 0.1.
+]
+
+{ #category : #tests }
 APrioriTest >> testNumberOfTransactions [
-	self assert: apriori numberOfTransactions equals: 6.
+	self assert: apriori numberOfTransactions equals: transactions size.
 ]

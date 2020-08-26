@@ -107,11 +107,6 @@ APriori >> frequentItemsets [
 	^ frequentItemsets
 ]
 
-{ #category : #accessing }
-APriori >> frequentItemsets: anObject [
-	frequentItemsets := anObject
-]
-
 { #category : #initialization }
 APriori >> initializeTransactions: transactions [
 	candidateGenerator := APrioriCandidateGenerator new.
@@ -151,7 +146,7 @@ APriori >> minCount: aMinimumCountThreshold [
 
 { #category : #accessing }
 APriori >> minSupport [
-	^ self minCount * numberOfTransactions
+	^ self minCount / numberOfTransactions
 ]
 
 { #category : #accessing }
@@ -162,9 +157,4 @@ APriori >> minSupport: aMinimumSupportThreshold [
 { #category : #accessing }
 APriori >> numberOfTransactions [
 	^ numberOfTransactions
-]
-
-{ #category : #accessing }
-APriori >> numberOfTransactions: anObject [
-	numberOfTransactions := anObject
 ]

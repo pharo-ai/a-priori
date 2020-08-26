@@ -19,8 +19,7 @@ APrioriFrequentItemsetsSelectorTest >> setUp [
 
 { #category : #tests }
 APrioriFrequentItemsetsSelectorTest >> testMinCount [
-	frequentItemsetsSelector minCount: 2.
-	self assert: frequentItemsetsSelector minCount equals: 2.
+	self assert: frequentItemsetsSelector minCount equals: 1.
 ]
 
 { #category : #tests }

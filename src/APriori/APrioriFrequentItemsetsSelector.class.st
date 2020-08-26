@@ -16,6 +16,7 @@ APrioriFrequentItemsetsSelector class >> forTransactions: aTransactionsDatabase 
 { #category : #initialization }
 APrioriFrequentItemsetsSelector >> initializeTransactions: aTransactionsDatabase [
 	itemsetCounter := APrioriItemsetCounter forTransactions: aTransactionsDatabase.
+	minCount := 1.
 ]
 
 { #category : #accessing }
