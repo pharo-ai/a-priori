@@ -1,12 +1,9 @@
 # APriori
 
-[![Build Status](https://travis-ci.org/PharoAI/APriori.svg?branch=master)](https://travis-ci.org/PharoAI/APriori)
+[![Build Status](https://travis-ci.org/pharo-ai/APriori.svg?branch=master)](https://travis-ci.org/pharo-ai/APriori)
 [![Build status](https://ci.appveyor.com/api/projects/status/lvff6yqo5bg84bsj?svg=true)](https://ci.appveyor.com/project/olekscode/apriori-9rq1r)
-[![Coverage Status](https://coveralls.io/repos/github/PharoAI/APriori/badge.svg?branch=master)](https://coveralls.io/github/PharoAI/APriori?branch=master)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/PharoAI/APriori/master/LICENSE)
-[![Pharo version](https://img.shields.io/badge/Pharo-6.1-%23aac9ff.svg)](https://pharo.org/download)
-[![Pharo version](https://img.shields.io/badge/Pharo-7.0-%23aac9ff.svg)](https://pharo.org/download)
-[![Pharo version](https://img.shields.io/badge/Pharo-8.0-%23aac9ff.svg)](https://pharo.org/download)
+[![Coverage Status](https://coveralls.io/repos/github/pharo-ai/APriori/badge.svg?branch=master)](https://coveralls.io/github/pharo-ai/APriori?branch=master)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/pharo-ai/APriori/master/LICENSE)
 
 Implementation of A-Priori algorithm in Pharo
 
