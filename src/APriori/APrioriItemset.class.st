@@ -52,10 +52,18 @@ APrioriItemset >> metricsValues [
 
 { #category : #printing }
 APrioriItemset >> printOn: aStream [
+
 	aStream
 		nextPut: ${;
 		nextPutAll: (', ' join: self);
 		nextPut: $}.
+	(self metricsValues includesKey: APrioriCountMetric)
+		ifTrue: [  
+			aStream
+				space;
+				nextPut: $[;
+				nextPutAll: self count asString;
+				nextPut: $] ]
 ]
 
 { #category : #accessing }

@@ -116,6 +116,13 @@ APrioriItemsetTest >> testPrintOn [
 	actual := stream contents.
 	
 	self assert: actual equals: expected.
+	
+	itemset count: 3.
+	stream := String new writeStream.
+	itemset printOn: stream.
+	expected :=  '{eggs, milk, butter} [3]'.
+	actual := stream contents.
+	self assert: actual equals: expected.
 ]
 
 { #category : #tests }
