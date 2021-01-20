@@ -81,17 +81,17 @@ APrioriTest >> testCalculateItemsetMetrics [
 APrioriTest >> testFindFrequentItemsets [
 	apriori minCount: 2.
 	apriori findFrequentItemsets.
-	
-	self assert: apriori frequentItemsets equals: {
+
+	self assertCollection: apriori frequentItemsets hasSameElements: {
 		#(butter) asItemset .
 		#(bacon) asItemset .
 		#(eggs) asItemset .
 		#(bread) asItemset .
 		#(milk) asItemset .
 		#(bread butter) asItemset .
-		#(bacon eggs) asItemset } asOrderedCollection.
+		#(bacon eggs) asItemset }.
 		
-	self assert: (apriori frequentItemsets collect: [ :each | each count ]) equals: #(3 2 3 3 2 2 2) asOrderedCollection. 
+	self assert: (apriori frequentItemsets collect: [ :each | each count ]) equals: #(3 3 2 3 2 2 2) asOrderedCollection. 
 ]
 
 { #category : #tests }
