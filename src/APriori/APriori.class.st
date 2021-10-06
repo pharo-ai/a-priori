@@ -89,23 +89,32 @@ APriori >> calculateItemsetMetrics: aCollectionOfMetricsClasses [
 ]
 
 { #category : #'as yet unclassified' }
-APriori >> findFrequentItemsets [ 
+APriori >> findFrequentItemsets [
+
 	"Find all frequent itemsets - all itemsets that pass the support threshold, meaning that they appear in transactions at least a given number of times. We start by finding frequent itemsets of size 1, then we use them to fing frequent itemsets of size 2, then 3, 4, and so on until we get an empty set."
+
 	| frequentKItemsets candidates |
 	
-	candidates := itembase collect: [ :item | { item } asItemset ].
+	candidates := self initialCandidates.
 	frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates.
-	
-	[ frequentKItemsets isEmpty ] whileFalse: [
+
+	[ frequentKItemsets isEmpty ] whileFalse: [ 
 		frequentItemsets addAll: frequentKItemsets.
 		"NOTE: deepCopy here is the hack to fix failing tests"
 		candidates := candidateGenerator generateCandidatesFrom: frequentKItemsets deepCopy.
-		frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates deepCopy ].
+		frequentKItemsets := frequentItemsetSelector selectFrequentItemsets: candidates deepCopy ]
 ]
 
 { #category : #accessing }
 APriori >> frequentItemsets [
 	^ frequentItemsets
+]
+
+{ #category : #'as yet unclassified' }
+APriori >> initialCandidates [
+	"Return itemsets of size 1. Can be overriden to change the behavior"
+	
+	^ itembase collect: [ :item | { item } asItemset ]
 ]
 
 { #category : #initialization }
