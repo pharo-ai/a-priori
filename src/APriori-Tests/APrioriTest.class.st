@@ -32,15 +32,22 @@ APrioriTest >> testAssociationRules [
 
 { #category : #tests }
 APrioriTest >> testBuildAssociationRules [
+	
+	| expectedRules |
+	
 	apriori minCount: 2.
 	apriori findFrequentItemsets.
 	apriori buildAssociationRules.
 	
-	self assert: apriori associationRules equals: {
+	expectedRules := {
 		#(bread) asItemset => #(butter) asItemset .
 		#(butter) asItemset => #(bread) asItemset .
 		#(bacon) asItemset => #(eggs) asItemset .
-		#(eggs) asItemset => #(bacon) asItemset } asOrderedCollection.
+		#(eggs) asItemset => #(bacon) asItemset }.
+		
+	self
+		assertCollection: apriori associationRules
+		hasSameElements: expectedRules.
 ]
 
 { #category : #tests }
@@ -79,10 +86,13 @@ APrioriTest >> testCalculateItemsetMetrics [
 
 { #category : #tests }
 APrioriTest >> testFindFrequentItemsets [
+
+	| expectedItemsets expectedCounts |
+	
 	apriori minCount: 2.
 	apriori findFrequentItemsets.
-
-	self assertCollection: apriori frequentItemsets hasSameElements: {
+	
+	expectedItemsets := {
 		#(butter) asItemset .
 		#(bacon) asItemset .
 		#(eggs) asItemset .
@@ -90,8 +100,25 @@ APrioriTest >> testFindFrequentItemsets [
 		#(milk) asItemset .
 		#(bread butter) asItemset .
 		#(bacon eggs) asItemset }.
+
+	self
+		assertCollection: apriori frequentItemsets
+		hasSameElements: expectedItemsets.
 		
-	self assert: (apriori frequentItemsets collect: [ :each | each count ]) equals: #(3 3 2 3 2 2 2) asOrderedCollection. 
+	expectedCounts := { 
+		#(butter) -> 3 .
+		#(bacon) -> 2 .
+		#(eggs) -> 3 .
+		#(bread) -> 3 .
+		#(milk) -> 2 .
+		#(bread butter) -> 2 .
+		#(bacon eggs) -> 2
+	} asDictionary.
+		
+	apriori frequentItemsets do: [ :itemset |
+		self
+			assert: itemset count
+			equals: (expectedCounts at: itemset asArray) ].
 ]
 
 { #category : #tests }
