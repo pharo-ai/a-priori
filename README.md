@@ -1,7 +1,6 @@
 # APriori
 
-[![Build Status](https://travis-ci.org/pharo-ai/APriori.svg?branch=master)](https://travis-ci.org/pharo-ai/APriori)
-[![Build status](https://ci.appveyor.com/api/projects/status/sv73cg1r07or14jk?svg=true)](https://ci.appveyor.com/project/olekscode/apriori-op2rk)
+[![Build status](https://github.com/pharo-ai/APriori/workflows/CI/badge.svg)](https://github.com/pharo-ai/APriori/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/github/pharo-ai/APriori/badge.svg?branch=master)](https://coveralls.io/github/pharo-ai/APriori?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/pharo-ai/APriori/master/LICENSE)
 
