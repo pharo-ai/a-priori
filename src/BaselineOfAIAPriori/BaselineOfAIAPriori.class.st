@@ -15,6 +15,6 @@ BaselineOfAIAPriori >> baseline: spec [
 				
 		"Packages"
 		spec 
-			package: 'APriori' with: [ spec requires: #('ContainersOrderedSet') ];
-			package: 'APriori-Tests' with: [ spec requires: #('APriori') ] ]
+			package: 'AI-APriori' with: [ spec requires: #('ContainersOrderedSet') ];
+			package: 'AI-APriori-Tests' with: [ spec requires: #('AI-APriori') ] ]
 ]
