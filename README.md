@@ -12,7 +12,7 @@ To install APriori, go to the Playground (`Ctrl+OW`) in your [Pharo](https://pha
 ```smalltalk
 Metacello new
   baseline: 'AIAPriori';
-  repository: 'github://PharoAI/AIAPriori/src';
+  repository: 'github://PharoAI/AIAPriori:v1.0.0';
   load.
 ```
 
