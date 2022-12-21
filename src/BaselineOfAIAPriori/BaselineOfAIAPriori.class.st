@@ -11,7 +11,7 @@ BaselineOfAIAPriori >> baseline: spec [
 		"External dependencies"
 		spec
 			baseline: 'ContainersOrderedSet'
-			with: [ spec repository: 'github://olekscode/Containers-OrderedSet/src' ].
+			with: [ spec repository: 'github://pharo-containers/Containers-OrderedSet/src' ].
 				
 		"Packages"
 		spec 
